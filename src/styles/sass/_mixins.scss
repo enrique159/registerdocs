@@ -1,0 +1,32 @@
+// DISPLAY FLEX BETWEEN
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// DISPLAY FLEX CENTER
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+// INPUT BASE: Este mixin es para los inputs de tipo texto, email, password, etc.
+@mixin input-base {
+  border: 1px solid $color-white-1;
+  border-radius: $border-radius-2;
+  font-family: $font-primary;
+  &:focus {
+    border: 1px solid $color-white-2;
+  }
+}
+
+
+// BUTTON BASE: Este mixin es para los botones de tipo submit, button, etc.
+@mixin button-base {
+  border-radius: $border-radius-2;
+  font-family: $font-primary;
+  font-weight: $font-medium;
+}

@@ -1,0 +1,139 @@
+// VUETIFY
+
+/*
+  ********* V_BTN *********
+*/
+.btn-base {
+  border-radius: 8px;
+  padding: 1rem 1rem;
+  height: fit-content !important;
+  font-size: $b3-size;
+  font-weight: $font-semi-bold;
+  text-transform: none;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+/*
+  ********* V_TEXT_FIELD *********
+*/
+.input-base {
+  .v-field--variant-solo {
+    background: none;
+    box-shadow: none;
+    color: $color-text;
+  }
+  .v-field__input {
+    border-radius: 8px;
+    background-color: $color-black-3;
+    border: 1px solid $color-black-3;
+    opacity: 1;
+    padding: 0.8rem 1rem;
+    min-height: 2rem;
+    transition: $transition-fast;
+  }
+  .v-field--error:not(.v-field--disabled) {
+    .v-label.v-field-label {
+      color: $color-error;
+    }
+    .v-field__field > .v-field__input {
+      border: 1px solid $color-error;
+    }
+  }
+  .v-messages {
+    color: $color-error !important;
+  }
+}
+
+/*
+  ********* V_TEXT_FIELD (PASSWORD) *********
+*/
+.input-password {
+  .v-field--variant-solo {
+    background: $color-black-3;
+    box-shadow: none;
+    color: $color-text;
+    border-radius: 8px;
+    border: 1px solid $color-black-3;
+  }
+  .v-field__input {
+    padding: 0.8rem 1rem;
+    min-height: 2rem;
+  }
+  .v-field__append-inner {
+    padding-top: 12px;
+  }
+
+  .v-field--error:not(.v-field--disabled) {
+    border: 1px solid $color-error;
+    .v-field__append-inner i {
+      color: $color-error !important;
+    }
+  }
+  .v-messages {
+    color: $color-error !important;
+  }
+}
+
+
+/*
+  ********* V_SELECT *********
+*/
+.input-select {
+  .v-field--variant-solo {
+    background: $color-black-3;
+    box-shadow: none;
+    color: $color-text;
+    border-radius: 8px;
+    border: 1px solid $color-black-3;
+  }
+  .v-field__input {
+    min-height: 2rem;
+  }
+  .v-field__append-inner {
+    padding-top: 16px;
+  }
+
+  .v-select__selection-text {
+    font-weight: $font-bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .v-field--error:not(.v-field--disabled) {
+    border: 1px solid $color-error;
+    .v-field__append-inner i {
+      color: $color-error !important;
+    }
+  }
+  .v-messages {
+    color: $color-error !important;
+  }
+}
+
+.input-select-light {
+  .v-field--variant-solo {
+    background: $color-white-1;
+    box-shadow: none;
+    color: $color-black-3;
+    border-radius: 8px;
+    border: 1px solid $color-white-1;
+  }
+}
+
+
+/*
+  ********* V_MENU *********
+*/
+.v-menu {
+  .v-overlay__content {
+    border-radius: 8px !important;
+  }
+  .v-list {
+    background: $color-black-2 !important;
+    .v-list-item--density-default:not(.v-list-item--nav).v-list-item--one-line {
+      color: $color-text !important;
+    }
+  }
+}

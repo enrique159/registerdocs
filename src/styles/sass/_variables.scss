@@ -1,0 +1,105 @@
+/* ***************** COLORS ****************** */
+// COLORS
+$color-green-0: #C3E9DE;
+$color-purple-0: #C9CAEE;
+$color-cian-0: #C2DBE9;
+$color-peach-0: #F0C8CF;
+$color-yellow-0: #E6DADE;
+$color-violete: #E4CDEE;
+$color-pink: #FAC2D9;
+
+// SYSTEM COLORS
+$color-success: #85C17F;
+$color-error: #E04A48;
+$color-warning: #F5A623;
+$color-info: #4A90E2;
+
+// BLACK
+$color-black-0: #000000;
+$color-black-1: #111315;
+$color-black-2: #1e1e1e;
+$color-black-3: #2D2D2D;
+$color-black-4: #737373;
+// WHITE
+$color-white-0: #FFFFFF;
+$color-white-1: #F8F9FD;
+$color-white-2: #EFEFEF;
+$color-white-3: #CACACA;
+$color-white-4: #9a9da7;
+
+/* ***************** COLOR SYSTEM ****************** */
+$color-background: $color-white-1;
+$color-text: $color-black-2;
+$color-text-dark: $color-black-0;
+$color-text-light: $color-black-4;
+
+
+/* ***************** FONTS ****************** */
+// TYPOGRAPHY
+$font-primary: 'Inter', Helvetica, sans-serif;
+// SIZES
+$h1-size: 81px;
+$h2-size: 64px;
+$h3-size: 56px;
+$h4-size: 48px;
+$h5-size: 36px;
+$h6-size: 32px;
+$b1-size: 26px;
+$b2-size: 21px;
+$b3-size: 16px;
+$b4-size: 14px;
+$b5-size: 12px;
+// WEIGHTS
+$font-black: 800;
+$font-bold: 700;
+$font-semi-bold: 600;
+$font-medium: 500;
+$font-regular: 400;
+$font-light: 300;
+$font-thin: 200;
+// LINE HEIGHT
+$line-height-h1: 96px;
+$line-height-h2: 72px;
+$line-height-h3: 62px;
+$line-height-h4: 54px;
+$line-height-h5: 43px;
+$line-height-h6: 38px;
+$line-height-b1: 32px;
+$line-height-b2: 26px;
+$line-height-b3: 19px;
+$line-height-b4: 14px;
+$line-height-b5: 12px;
+
+
+/* ***************** Z-INDEX ****************** */
+$z-index-1: 1;
+$z-index-20: 20;
+$z-index-30: 30;
+$z-index-40: 40;
+$z-index-50: 50;
+$z-index-60: 60;
+$z-index-70: 70;
+$z-index-80: 80;
+$z-index-90: 90;
+$z-index-100: 100;
+
+
+/* ***************** TRANSITION ****************** */
+$transition-fast: 0.1s ease-in-out;
+$transition-normal: 0.2s ease-in-out;
+$transition-slow: 0.3s ease-in-out;
+
+
+/* ***************** BOX SHADOW ****************** */
+$box-shadow-1: 0px 4px 16px rgba(0, 0, 0, 0.02);
+$box-shadow-2: 0px 0px 24px rgba(0, 0, 0, 0.1);
+$box-shadow-3: 0px 0px 24px rgba(0, 0, 0, 0.2);
+
+
+/* ***************** BORDER RADIUS ****************** */
+$border-radius-1: 4px;
+$border-radius-2: 8px;
+$border-radius-3: 14px;
+$border-radius-4: 24px;
+$border-radius-5: 32px;
+$border-radius-6: 40px;
