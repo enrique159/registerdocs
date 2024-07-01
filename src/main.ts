@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
-import router from './router'
+import router from './router/index'
 import '@/styles/styles.scss'
 
 // Vuetify
@@ -9,6 +9,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.css'
 
 // Change the default locale momentjs
 import moment from 'moment'
@@ -29,6 +30,7 @@ const app = createApp(App)
 const vuetify = createVuetify({
   components,
   directives,
+  icons: { defaultSet: 'mdi' },
 })
 
 app.use(Vue3Toastify)

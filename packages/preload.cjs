@@ -1,4 +1,5 @@
-const { contextBridge, ipcRenderer } = require('electron')
+const { contextBridge } = require('electron')
+const { signIn } = require('./app/modules/auth/authApplication.cjs')
 
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
@@ -12,9 +13,5 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 contextBridge.exposeInMainWorld('electron', {
-  asyncMessage: (params, callback ) => {
-    ipcRenderer.removeAllListeners('async-message')
-    ipcRenderer.on('async-message', callback)
-    ipcRenderer.send('async-message', params)
-  },
+  signIn,
 })

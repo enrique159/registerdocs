@@ -1,0 +1,85 @@
+<template>
+  <div class="signin-view">
+    <v-card class="signin-card px-6 py-8" min-width="368">
+      <v-form v-model="form" @submit.prevent="onSubmit">
+        <h5 class="mb-8">
+          Iniciar sesión
+        </h5>
+        <v-text-field
+          v-model="username"
+          :readonly="loading"
+          :rules="[required]"
+          class="mb-2"
+          label="Nombre de usuario"
+        />
+
+        <v-text-field
+          v-model="password"
+          :readonly="loading"
+          :rules="[required]"
+          :type="showPassword ? 'text' : 'password'"
+          :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          label="Contraseña"
+          placeholder="Escribe tu contraseña"
+          @click:append-inner="showPassword = !showPassword"
+        />
+
+        <br>
+
+        <v-btn
+          :disabled="!form"
+          :loading="loading"
+          color="primary"
+          size="large"
+          type="submit"
+          variant="tonal"
+          block
+        >
+          <v-icon class="mr-3">
+            mdi-login
+          </v-icon>
+          Ingresar
+        </v-btn>
+      </v-form>
+    </v-card>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { signIn } from '@/api/electron'
+
+// const router = useRouter()
+
+const form = ref(false)
+const username = ref("")
+const password = ref("")
+const loading = ref(false)
+const showPassword = ref(false)
+
+const required = (v: string) => !!v || 'Este campo es requerido'
+
+const onSubmit = () => {
+  if (!form.value) return
+  loading.value = true
+  signIn({ username: username.value, password: password.value }, (response: any) => {
+    console.log(response)
+  })
+  loading.value = false
+}
+</script>
+
+<style lang="scss" scoped>
+.signin-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .signin-card {
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px 2px rgba(0, 0, 0, 0.05);
+  }
+}
+</style>
