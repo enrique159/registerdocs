@@ -1,6 +1,9 @@
 import { RouteRecordRaw } from "vue-router"
+import NotFoundView from "@/views/NotFoundView.vue"
 import HomeView from "@/views/home/HomeView.vue"
+import CreateRegisterView from "@/views/registers/CreateRegisterView.vue"
 import SignInView from "@/views/auth/SignInView.vue"
+import MainView from "@/views/MainView.vue"
 
 const routes: RouteRecordRaw[] = [
   {
@@ -8,9 +11,22 @@ const routes: RouteRecordRaw[] = [
     redirect: "/auth/signin",
   },
   {
-    path: "/home",
-    name: "Home",
-    component: HomeView,
+    path: "/main",
+    name: "Main",
+    redirect: "/main/home",
+    component: MainView,
+    children: [
+      {
+        path: "home",
+        name: "Home",
+        component: HomeView,
+      },
+      {
+        path: "create-register",
+        name: "CreateRegister",
+        component: CreateRegisterView,
+      },
+    ],
   },
   {
     path: "/auth/signin",
@@ -18,11 +34,11 @@ const routes: RouteRecordRaw[] = [
     component: SignInView,
   },
   // // 404
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   name: "NotFound",
-  //   component: NotFoundView,
-  // },
+  {
+    path: '/:pathMatch(.*)*',
+    name: "NotFound",
+    component: NotFoundView,
+  },
 ]
 
 export default routes

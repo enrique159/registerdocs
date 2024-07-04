@@ -48,9 +48,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToasts } from '@/composables/useToasts'
 import { signIn } from '@/api/electron'
 
-// const router = useRouter()
+const router = useRouter()
+const { error } = useToasts()
 
 const form = ref(false)
 const username = ref("")
@@ -60,11 +62,16 @@ const showPassword = ref(false)
 
 const required = (v: string) => !!v || 'Este campo es requerido'
 
-const onSubmit = () => {
+const onSubmit = async() => {
   if (!form.value) return
   loading.value = true
+  await new Promise((resolve) => setTimeout(resolve, 500))
   signIn({ username: username.value, password: password.value }, (response: any) => {
-    console.log(response)
+    if (response.success) {
+      router.push({ name: 'Home' })
+    } else {
+      error(response.message)
+    }
   })
   loading.value = false
 }

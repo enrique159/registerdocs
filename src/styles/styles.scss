@@ -7,6 +7,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow: hidden !important;
 }
 
 body {
@@ -14,7 +15,7 @@ body {
   font-family: $font-primary;
   font-size: $b3-size;
   background-color: $color-background;
-  overflow-x: hidden;
+  overflow: hidden;
   color: $color-text;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

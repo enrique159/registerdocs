@@ -38,7 +38,7 @@ module.exports = {
     //quotes: [2, "double", { avoidEscape: true, allowTemplateLiterals: true }],
     quotes: "off",
     "no-unused-vars": "warn",
-    "vue/no-static-inline-styles": [ "error", { allowBinding: true } ],
+    // "vue/no-static-inline-styles": [ "error", { allowBinding: true } ],
     "comma-dangle": ["error", {
       objects: "always-multiline",
       arrays: "always-multiline",

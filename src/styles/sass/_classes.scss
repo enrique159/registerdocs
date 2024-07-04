@@ -169,11 +169,28 @@
 
 
 // WIDTH
-.w-100 { width: 100%; }
-.w-75 { width: 75%; }
-.w-50 { width: 50%; }
-.w-33 { width: 33.333333%; }
-.w-25 { width: 25%; }
+@for $i from 0 through 100 {
+  .w-#{$i} { width: calc(#{$i} * 1%); }
+}
+@for $i from 0 through 1000 {
+  .w-#{$i}-px { width: calc(#{$i} * 1px); }
+}
+
+// MAX WIDTH
+@for $i from 0 through 100 {
+  .max-w-#{$i} { width: calc(#{$i} * 1%); }
+}
+@for $i from 0 through 1000 {
+  .max-w-#{$i}-px { max-width: calc(#{$i} * 1px); }
+}
+
+// MIN WIDTH
+@for $i from 0 through 100 {
+  .min-w-#{$i} { width: calc(#{$i} * 1%); }
+}
+@for $i from 0 through 1000 {
+  .min-w-#{$i}-px { max-width: calc(#{$i} * 1px); }
+}
 
 // FLEX
 .d-flex { display: flex; }

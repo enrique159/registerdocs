@@ -3,6 +3,7 @@ const path = require('path')
 const env = require('../env.json')
 const initDB = require('./app/database/index.cjs')
 const dev = env.NODE_ENV === 'development'
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 function createWindow() {
   // Create the browser window.
