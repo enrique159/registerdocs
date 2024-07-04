@@ -1,5 +1,10 @@
 <template>
   <div class="signin-view">
+    <div class="signin-view__logo">
+      <p class="signin-view__logo__text">
+        _registerdocs
+      </p>
+    </div>
     <v-card class="signin-card px-6 py-8" min-width="368">
       <v-form v-model="form" @submit.prevent="onSubmit">
         <h5 class="mb-8">
@@ -83,10 +88,22 @@ const onSubmit = async() => {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-color: $color-background;
 
   .signin-card {
     border-radius: 1rem;
     box-shadow: 0 4px 12px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .signin-view__logo {
+    position: absolute;
+    top: 2rem;
+    &__text {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: $color-blue-0;
+      text-align: center;
+    }
   }
 }
 </style>

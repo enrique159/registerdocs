@@ -1,4 +1,4 @@
-const { contextBridge } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 const { signIn } = require('./app/modules/auth/authApplication.cjs')
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -14,4 +14,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
 contextBridge.exposeInMainWorld('electron', {
   signIn,
+  closeApp: () => ipcRenderer.send('close_app'),
 })

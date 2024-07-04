@@ -10,7 +10,10 @@ module.exports = {
     filename: path.join(__dirname, '../../../database.sqlite'),
   },
   migrations: {
-    directory: path.join(__dirname, 'migrations'),
+    directory: './migrations',
+  },
+  seeds: {
+    directory: './seeds',
   },
   useNullAsDefault: true,
 }

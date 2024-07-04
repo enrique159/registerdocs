@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const env = require('../env.json')
 const initDB = require('./app/database/index.cjs')
@@ -65,5 +65,7 @@ app.on('window-all-closed', () => {
   }
 })
 
-
+ipcMain.on('close_app', () => {
+  app.quit()
+})
 require('./app/modules/auth/authListeners.cjs')

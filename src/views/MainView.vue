@@ -9,7 +9,30 @@
           <v-btn v-bind="props" icon="mdi-plus" variant="text" />
         </template>
       </v-tooltip>
-      <v-btn icon="mdi-dots-vertical" variant="text" />
+      <v-menu>
+        <template #activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props" />
+        </template>
+
+        <v-list style="background: white !important;" density="compact" nav>
+          <v-list-item link to="/">
+            <div class="d-flex align-center">
+              <v-icon class="tc-text-light ts-b3 mr-2">
+                mdi-logout
+              </v-icon>
+              <span>Cerrar sesión</span>
+            </div>
+          </v-list-item>
+          <v-list-item link @click="closeApp">
+            <div class="d-flex align-center">
+              <v-icon class="tc-peach-0 ts-b3 mr-2">
+                mdi-close
+              </v-icon>
+              <span>Salir del programa</span>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" temporary>
@@ -45,7 +68,7 @@ const itemsMenu = ref([
   },
   {
     icon: 'mdi-invoice-text-plus-outline',
-    title: 'Crear registro de documento',
+    title: 'Agregar registro',
     value: 'crear-registro',
     link: '/main/create-register',
   },
@@ -63,6 +86,10 @@ const route = useRoute()
 const currentRoute = computed(() => {
   return itemsMenu.value.find((item) => item.link === route.path)?.title
 })
+
+const closeApp = () => {
+  window.electron.closeApp()
+}
 </script>
 
 <style lang="scss" scoped>
