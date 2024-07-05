@@ -1,3 +1,4 @@
 import { AuthParams } from './auth'
+import { Area } from './areas'
 
-export type { AuthParams }
+export type { AuthParams, Area }

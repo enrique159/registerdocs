@@ -68,4 +68,7 @@ app.on('window-all-closed', () => {
 ipcMain.on('close_app', () => {
   app.quit()
 })
+
 require('./app/modules/auth/authListeners.cjs')
+require('./app/modules/areas/areasListeners.cjs')
+require('./app/modules/actors/actorsListeners.cjs')

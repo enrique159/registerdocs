@@ -18,12 +18,17 @@ moment.locale('es')
 
 // Global
 declare global {
+  // eslint-disable-next-line no-unused-vars
   interface Window { electron: any; }
 }
 
 // Toastify
 import Vue3Toastify from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
+
+// Datepicker
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const pinia = createPinia()
 const app = createApp(App)
@@ -32,6 +37,8 @@ const vuetify = createVuetify({
   directives,
   icons: { defaultSet: 'mdi' },
 })
+
+app.component('DatePicker', VueDatePicker)
 
 app.use(Vue3Toastify)
 app.use(pinia)

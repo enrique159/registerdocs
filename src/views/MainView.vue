@@ -6,7 +6,7 @@
       <v-spacer />
       <v-tooltip text="Agregar registro" location="bottom">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-plus" variant="text" />
+          <v-btn v-bind="props" icon="mdi-plus" variant="text" @click="goToCreateRegister" />
         </template>
       </v-tooltip>
       <v-menu>
@@ -58,6 +58,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 const itemsMenu = ref([
   {
@@ -82,10 +83,15 @@ const itemsMenu = ref([
 
 const drawer = ref(false)
 const route = useRoute()
+const router = useRouter()
 
 const currentRoute = computed(() => {
   return itemsMenu.value.find((item) => item.link === route.path)?.title
 })
+
+const goToCreateRegister = () => {
+  router.push('/main/create-register')
+}
 
 const closeApp = () => {
   window.electron.closeApp()
