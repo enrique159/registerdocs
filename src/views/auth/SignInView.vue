@@ -54,10 +54,12 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToasts } from '@/composables/useToasts'
+import { useAppStore } from '@/stores/appStore'
 import { signIn } from '@/api/electron'
 
 const router = useRouter()
 const { error } = useToasts()
+const { setUser } = useAppStore()
 
 const form = ref(false)
 const username = ref("")
@@ -73,6 +75,7 @@ const onSubmit = async() => {
   await new Promise((resolve) => setTimeout(resolve, 500))
   signIn({ username: username.value, password: password.value }, (response: any) => {
     if (response.success) {
+      setUser(response.response)
       router.push({ name: 'Home' })
     } else {
       error(response.message)

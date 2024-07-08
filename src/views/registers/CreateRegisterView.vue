@@ -1,12 +1,21 @@
 <template>
   <div class="create-register-view">
-    <v-form v-model="createRegisterForm" @submit.prevent="onSubmit">
+    <v-form ref="createDocumentFormRef" @submit.prevent>
       <v-container>
         <v-row>
           <v-col cols="12" class="pb-0">
-            <p class="ts-b3 tc-textdark tw-bold">
-              Datos del registro
-            </p>
+            <div class="d-flex justify-space-between align-center">
+              <p class="ts-b3 tc-textdark tw-bold">
+                Datos del registro
+              </p>
+              <v-tooltip text="Reiniciar formulario" location="left">
+                <template #activator="{ props }">
+                  <v-btn v-bind="props" color="dark" icon variant="flat" @click="clearForm">
+                    <v-icon>mdi-refresh</v-icon>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </div>
           </v-col>
           <v-col cols="4" md="3" class="pb-0">
             <label for="fecha-input">
@@ -18,7 +27,7 @@
               id="fecha-input"
               cancel-text="cancelar"
               select-text="seleccionar"
-              :format="format"
+              :format="formatDate"
               :enable-time-picker="false"
               :month-change-on-arrows="true"
               :rules="[required]"
@@ -101,7 +110,7 @@
               required
             />
           </v-col>
-          <v-col cols="12" class="py-0">
+          <v-col cols="11" class="py-0">
             <label for="area-input">Área</label>
             <v-autocomplete
               id="area-input"
@@ -115,6 +124,17 @@
               :rules="[areaRequired]"
               required
             />
+          </v-col>
+          <v-col cols="1" class="py-0">
+            <div class="h-100 d-flex flex-column justify-center">
+              <v-tooltip text="Agregar área" location="bottom">
+                <template #activator="{ props }">
+                  <v-btn v-bind="props" color="dark" icon variant="tonal" @click="createAreaDialog = true">
+                    <v-icon>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </div>
           </v-col>
 
           <v-col cols="12" class="pb-0">
@@ -136,21 +156,74 @@
             />
           </v-col>
 
-          <div class="w-100 d-flex justify-end">
-            <v-btn class="ml-auto" color="primary" variant="tonal" @click="onSubmit">
+          <div class="w-100 d-flex justify-end" @click="onSubmit">
+            <v-btn class="ml-auto" color="#1c67d7" variant="flat" type="submit">
               Guardar
             </v-btn>
           </div>
         </v-row>
       </v-container>
     </v-form>
+    <v-dialog
+        v-model="createAreaDialog"
+        max-width="600"
+      >
+        <v-card
+          prepend-icon="mdi-select-place"
+          title="Agregar nueva área"
+        >
+          <v-card-text>
+            <v-row dense>
+              <v-col cols="12">
+                <label for="new-area-input">Nombre del área</label>
+                <v-text-field
+                  id="new-area-input"
+                  v-model="newArea"
+                  placeholder="Ej. Dirección de sistemas"
+                  :rules="[required]"
+                  outlined
+                  dense 
+                  @keydown.enter="createNewArea"
+                />
+              </v-col>
+            </v-row>
+          </v-card-text>
+  
+          <v-divider></v-divider>
+  
+          <v-card-actions>
+            <v-spacer></v-spacer>
+  
+            <v-btn
+              text="Cerrar"
+              variant="plain"
+              @click="createAreaDialog = false"
+            ></v-btn>
+  
+            <v-btn
+              color="primary"
+              text="Agegar"
+              variant="tonal"
+              @click="createNewArea"
+            ></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onBeforeMount } from 'vue'
-import { getAreas, getActors } from '@/api/electron'
-import type { Area } from '@/api/interfaces'
+import { getAreas, getActors, createArea, createDocument } from '@/api/electron'
+import { useToasts } from '@/composables/useToasts';
+import { useAppStore } from '@/stores/appStore';
+import type { Area, Documento } from '@/api/interfaces'
+
+const { warning, success, error } = useToasts()
+const { getUser } = useAppStore()
+
+const createDocumentFormRef = ref<null | HTMLFormElement>(null)
+const createAreaDialog = ref(false)
 
 const fecha = ref(new Date())
 const numero_oficio = ref('')
@@ -158,7 +231,7 @@ const enviado_por = ref(null)
 const cargo = ref('')
 const asunto = ref('')
 const dirigido_a = ref(null)
-const documento = ref(null)
+const documento = ref<null | File>(null)
 const area = ref(null)
 
 const areas = ref<Area[]>([
@@ -166,24 +239,86 @@ const areas = ref<Area[]>([
 ])
 const actors = ref<string[]>([])
 
-const createRegisterForm = ref(false)
-
 // Rules
 const required = (v: string) => !!v || 'Este campo es requerido'
 const areaRequired = (v: Object) => v !== null || 'Selecciona un área'
 
-const onSubmit = () => {
-  console.log('submit')
+const clearForm = () => {
+  fecha.value = new Date()
+  numero_oficio.value = ''
+  enviado_por.value = null
+  cargo.value = ''
+  asunto.value = ''
+  dirigido_a.value = null
+  documento.value = null
+  area.value = null
+
+  createDocumentFormRef.value?.reset()
 }
 
-const format = (date: Date) => {
-  const day = date.getDate()
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
+// Form Actions
+const onSubmit = async () => {
+  await createDocumentFormRef.value?.validate()
+  if (createDocumentFormRef.value?.isValid) {
+    if (!documento.value) {
+      console.log(documento.value)
+      return warning('Selecciona un documento')
+    }
 
-  return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`
+    const file = documento.value
+    const reader = new FileReader()
+
+    reader.onload = async (e) => {
+      const document: Partial<Documento> = {
+        fecha: fecha.value,
+        numero_oficio: numero_oficio.value,
+        enviado_por: enviado_por.value ?? '',
+        cargo: cargo.value,
+        asunto: asunto.value,
+        dirigido_a: dirigido_a.value ?? '',
+        documento: { content: e.target?.result, name: file.name },
+        area_id: area.value ?? 0,
+        user_id: getUser.id,
+      }
+      await createDocument(document, (response: any) => {
+        if (response.success) {
+          success('Documento creado correctamente')
+          clearForm()
+        } else {
+          error('Ocurrió un error al crear el documento')
+        }
+      })
+    }
+
+    reader.readAsArrayBuffer(file)
+  }
 }
 
+// Área Dialog
+const newArea = ref('')
+
+const createNewArea = async () => {
+  if (newArea.value === '' || newArea.value === null) {
+    return warning('Ingresa un nombre para el área')
+  }
+
+  await createArea({ nombre: newArea.value}, async (response: any) => {
+    if (response.success) {
+      success('Área creada correctamente')
+      await getAreas((allAreas: any) => {
+        areas.value = allAreas.response
+      })
+      area.value = response.response.id
+      newArea.value = ''
+      createAreaDialog.value = false
+
+    } else {
+      error('Ocurrió un error al crear el área')
+    }
+  })
+}
+
+// Hook Cycles
 onBeforeMount(async () => {
   await getAreas((allAreas: any) => {
     areas.value = allAreas.response
@@ -192,15 +327,22 @@ onBeforeMount(async () => {
     actors.value = allActors.response.map((actor: any) => actor.nombre)
   })
 })
+
+// Formating
+const formatDate = (date: Date) => {
+  const day = date.getDate()
+  const month = date.getMonth() + 1
+  const year = date.getFullYear()
+
+  return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`
+}
 </script>
 
 <style lang="scss" scoped>
-.create-register-view {
-  label {
-    color: $color-text-light;
-    font-size: $b4-size;
-    font-weight: $font-medium;
-  }
+label {
+  color: $color-text-light;
+  font-size: $b4-size;
+  font-weight: $font-medium;
 }
 
 #fecha-input :deep(input) {

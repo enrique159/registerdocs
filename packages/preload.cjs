@@ -1,7 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron')
 const { signIn } = require('./app/modules/auth/authApplication.cjs')
 const { getAreas, createArea, updateArea, deleteArea } = require('./app/modules/areas/areasApplication.cjs')
-const { getActors } = require('./app/modules/actors/actorsApplication.cjs')
+const { getActors, getActorByNombre, createActor, deleteActor } = require('./app/modules/actors/actorsApplication.cjs')
+const { createDocument } = require('./app/modules/documents/documentsApplication.cjs')
 
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
@@ -24,6 +25,11 @@ contextBridge.exposeInMainWorld('electron', {
   deleteArea,
   // Actors
   getActors,
+  getActorByNombre,
+  createActor,
+  deleteActor,
+  // Documents
+  createDocument,
   // Extras
   closeApp: () => ipcRenderer.send('close_app'),
 })

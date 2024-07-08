@@ -60,7 +60,11 @@ module.exports = {
     axios: "readonly",
     globalError: "readonly",
     window: "readonly",
+    Window: "readonly",
     document: "readonly",
+  },
+  types: {
+    HTMLFormElement: "readonly",
   },
   // settings: {
   //   "import/resolver": {

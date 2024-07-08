@@ -1,7 +1,7 @@
 <template>
   <div class="main-view">
     <v-app-bar color="light" density="comfortable" elevation="0">
-      <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" :icon="drawer ? '$close' : '$menu'" />
       <v-toolbar-title>{{ currentRoute }}</v-toolbar-title>
       <v-spacer />
       <v-tooltip text="Agregar registro" location="bottom">
@@ -102,6 +102,9 @@ const closeApp = () => {
 .main-view {
   width: 100%;
   height: 100vh;
+  &__app-bar {
+    border-bottom: 1px solid $color-white-3;
+  }
   &__content {
     overflow: hidden;
   }

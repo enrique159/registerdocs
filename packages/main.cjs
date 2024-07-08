@@ -72,3 +72,4 @@ ipcMain.on('close_app', () => {
 require('./app/modules/auth/authListeners.cjs')
 require('./app/modules/areas/areasListeners.cjs')
 require('./app/modules/actors/actorsListeners.cjs')
+require('./app/modules/documents/documentsListeners.cjs')

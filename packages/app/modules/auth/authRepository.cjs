@@ -9,5 +9,5 @@ exports.signIn = async function (data) {
   if (user.password !== data.password) {
     return response(false, 'Contraseña incorrecta', data)
   }
-  return response(true, 'Usuario encontrado', user)
+  return response(true, 'Usuario encontrado', { id: user.id, username: user.username })
 }

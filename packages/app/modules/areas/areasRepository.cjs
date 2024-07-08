@@ -12,9 +12,9 @@ exports.getAreas = async function () {
 }
 
 exports.createArea = async function (area) {
-  return await knex('areas').insert(area)
-    .then(() => {
-      return response(true, 'Área creada')
+  return await knex('areas').insert(area).returning('*')
+    .then((newArea) => {
+      return response(true, 'Área creada', newArea[0])
     })
     .catch((err) => {
       return response(false, 'Error al crear área', err)
