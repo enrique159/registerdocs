@@ -4,7 +4,7 @@
  */
 exports.createTable = async function(knex) {
   await knex.schema.createTable('documents', (table) => {
-    table.increments('id').primary()
+    table.uuid('id').primary()
     table.date('fecha')
     table.string('numero_oficio')
     table.string('enviado_por')

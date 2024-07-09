@@ -152,6 +152,7 @@
               placeholder="Seleccionar archivo"
               accept="image/*, application/pdf"
               :rules="[required]"
+              clearable
               required
             />
           </v-col>
@@ -269,25 +270,30 @@ const onSubmit = async () => {
     const reader = new FileReader()
 
     reader.onload = async (e) => {
-      const document: Partial<Documento> = {
-        fecha: fecha.value,
-        numero_oficio: numero_oficio.value,
-        enviado_por: enviado_por.value ?? '',
-        cargo: cargo.value,
-        asunto: asunto.value,
-        dirigido_a: dirigido_a.value ?? '',
-        documento: { content: e.target?.result, name: file.name },
-        area_id: area.value ?? 0,
-        user_id: getUser.id,
-      }
-      await createDocument(document, (response: any) => {
-        if (response.success) {
-          success('Documento creado correctamente')
-          clearForm()
-        } else {
-          error('Ocurrió un error al crear el documento')
+      try {
+        const document: Partial<Documento> = {
+          fecha: fecha.value,
+          numero_oficio: numero_oficio.value,
+          enviado_por: enviado_por.value ?? '',
+          cargo: cargo.value,
+          asunto: asunto.value,
+          dirigido_a: dirigido_a.value ?? '',
+          documento: { content: e.target?.result, name: file.name },
+          area_id: area.value ?? 0,
+          user_id: getUser.id,
         }
-      })
+        await createDocument(document, (response: any) => {
+          if (response.success) {
+            success('Documento creado correctamente')
+            clearForm()
+          } else {
+            error('Ocurrió un error al crear el documento')
+          }
+        })
+      } catch (err) {
+        console.error(err)
+        error('Ocurrió un error al crear el documento')
+      }
     }
 
     reader.readAsArrayBuffer(file)

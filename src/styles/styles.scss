@@ -101,6 +101,9 @@ button {
 
 input {
   outline: none;
+  &::placeholder {
+    font-weight: 600;
+  }
 }
 
 /* Firefox */

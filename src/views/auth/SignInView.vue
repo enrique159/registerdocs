@@ -37,7 +37,6 @@
           color="primary"
           size="large"
           type="submit"
-          variant="tonal"
           block
         >
           <v-icon class="mr-3">

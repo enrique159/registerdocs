@@ -4,7 +4,7 @@
  */
 exports.createTable = async function(knex) {
   await knex.schema.createTable('users', (table) => {
-    table.increments('id').primary()
+    table.uuid('id').defaultTo(knex.fn.uuid()).primary()
     table.string('username')
     table.string('password')
   }).then(() => {
