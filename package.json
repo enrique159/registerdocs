@@ -1,5 +1,5 @@
 {
-  "name": "bitacora-documentos",
+  "name": "registerdocs",
   "private": true,
   "version": "0.0.1",
   "author": "Enrique Marin Hirales",
@@ -57,5 +57,16 @@
     "vite-plugin-vue-devtools": "^7.3.4",
     "vue-tsc": "^2.0.21",
     "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.registerdocs.app",
+    "productName": "RegisterDocs",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "packages/**/*"
+    ]
   }
 }

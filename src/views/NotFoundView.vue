@@ -6,7 +6,7 @@
     <p class="tc-text-light mb-5">
       Parece que se ha intentado abrir una sección que no está definida.
     </p>
-    <router-link to="/main">
+    <router-link to="/">
       <v-btn color="warning" variant="tonal">
         <v-icon class="mr-4">
           mdi-arrow-left

@@ -12,8 +12,8 @@ exports.createTable = async function(knex) {
     table.string('asunto')
     table.string('dirigido_a')
     table.string('documento')
-    table.integer('area_id').unsigned().references('areas.id')
-    table.integer('user_id').unsigned().references('users.id')
+    table.uuid('area_id').references('areas.id')
+    table.uuid('user_id').references('users.id')
     table.datetime('created_at').defaultTo(knex.fn.now())
   }).then(() => {
     console.log("Table 'documents' created.")

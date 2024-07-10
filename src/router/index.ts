@@ -1,24 +1,25 @@
-import { createWebHistory, createRouter } from "vue-router"
-// import { useUser } from "@/composables/stores/useUser"
+import { createWebHashHistory, createRouter } from "vue-router"
+import { useAppStore } from "@/stores/appStore"
 
 import routes from "./routes"
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 })
 
-// router.beforeEach((to, from, next) => {
-//   const { validateToken } = useUser()
-//   if (to.path === "/auth/signin" && validateToken()) {
-//     next({ path: "/" })
-//   }
-//   else if (to.meta.requiresAuth && !validateToken()) {
-//     next({ path: "/auth" })
-//   }
-//   else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  console.log("to", to, to.path)
+  const { getUser } = useAppStore()
+  if (to.path === "/auth/signin" && getUser.id) {
+    next({ path: "/main" })
+  }
+  else if (to.meta.requiresAuth && !getUser.id) {
+    next({ path: "/" })
+  }
+  else {
+    next()
+  }
+})
 
 export default router

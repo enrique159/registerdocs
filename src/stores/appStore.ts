@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useAppStore = defineStore('app', () => {
-  const user = ref({ id: 0,username: '' })
+  const user = ref({ id: '', username: '' })
 
   const getUser = computed(() => user.value)
 
@@ -10,9 +10,14 @@ export const useAppStore = defineStore('app', () => {
     user.value = newUser
   }
 
+  const clearUser = () => {
+    user.value = { id: '', username: '' }
+  }
+
   return {
     user,
     getUser,
-    setUser
+    setUser,
+    clearUser
   }
 })

@@ -16,6 +16,7 @@
           :rules="[required]"
           class="mb-2"
           label="Nombre de usuario"
+          variant="outlined"
         />
 
         <v-text-field
@@ -27,6 +28,7 @@
           label="Contraseña"
           placeholder="Escribe tu contraseña"
           @click:append-inner="showPassword = !showPassword"
+          variant="outlined"
         />
 
         <br>

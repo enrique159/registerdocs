@@ -1,13 +1,13 @@
 const path = require('path')
+const os = require('os')
 // Update with your config settings.
-
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 module.exports = {
   client: 'sqlite3',
   connection: {
-    filename: path.join(__dirname, '../../../database.sqlite'),
+    filename: path.join(os.homedir(), '.db/registerdocs.sqlite'),
   },
   migrations: {
     directory: './migrations',

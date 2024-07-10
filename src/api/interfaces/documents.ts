@@ -7,7 +7,7 @@ export interface Documento {
   asunto: string
   dirigido_a: string
   documento: any
-  area_id: number
-  user_id?: number
+  area_id: string
+  user_id?: string
   created_at?: Date
 }

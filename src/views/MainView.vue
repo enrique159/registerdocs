@@ -15,7 +15,7 @@
         </template>
 
         <v-list style="background: white !important;" density="compact" nav>
-          <v-list-item link to="/">
+          <v-list-item link @click="goToSignIn">
             <div class="d-flex align-center">
               <v-icon class="tc-text-light ts-b3 mr-2">
                 mdi-logout
@@ -59,6 +59,7 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
+import { useAppStore } from '@/stores/appStore'
 
 const itemsMenu = ref([
   {
@@ -84,6 +85,7 @@ const itemsMenu = ref([
 const drawer = ref(false)
 const route = useRoute()
 const router = useRouter()
+const { clearUser } = useAppStore()
 
 const currentRoute = computed(() => {
   return itemsMenu.value.find((item) => item.link === route.path)?.title
@@ -91,6 +93,11 @@ const currentRoute = computed(() => {
 
 const goToCreateRegister = () => {
   router.push('/main/create-register')
+}
+
+const goToSignIn = () => {
+  clearUser()
+  router.push('/')
 }
 
 const closeApp = () => {

@@ -279,7 +279,7 @@ const onSubmit = async () => {
           asunto: asunto.value,
           dirigido_a: dirigido_a.value ?? '',
           documento: { content: e.target?.result, name: file.name },
-          area_id: area.value ?? 0,
+          area_id: area.value ?? '',
           user_id: getUser.id,
         }
         await createDocument(document, (response: any) => {

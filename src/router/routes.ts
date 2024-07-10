@@ -15,6 +15,7 @@ const routes: RouteRecordRaw[] = [
     name: "Main",
     redirect: "/main/home",
     component: MainView,
+    meta: { requiresAuth: true },
     children: [
       {
         path: "home",
