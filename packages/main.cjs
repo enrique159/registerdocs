@@ -69,7 +69,8 @@ ipcMain.on('close_app', () => {
   app.quit()
 })
 
-require('./app/modules/auth/authListeners.cjs')
-require('./app/modules/areas/areasListeners.cjs')
-require('./app/modules/actors/actorsListeners.cjs')
-require('./app/modules/documents/documentsListeners.cjs')
+require('./app/modules/auth/authApplication.cjs')
+require('./app/modules/areas/areasApplication.cjs')
+require('./app/modules/actors/actorsApplication.cjs')
+require('./app/modules/documents/documentsApplication.cjs')
+require('./app/modules/configuration/configurationApplication.cjs')

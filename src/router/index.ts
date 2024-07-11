@@ -9,7 +9,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log("to", to, to.path)
   const { getUser } = useAppStore()
   if (to.path === "/auth/signin" && getUser.id) {
     next({ path: "/main" })

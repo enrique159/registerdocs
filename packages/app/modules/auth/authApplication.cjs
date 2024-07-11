@@ -1,7 +1,7 @@
-const { ipcRenderer } = require('electron')
+const { ipcMain } = require('electron')
+const { signIn } = require('./authRepository.cjs')
 
-exports.signIn = function (params, callback) {
-  ipcRenderer.removeAllListeners('sign_in')
-  ipcRenderer.on('sign_in', (_, response) => callback(response))
-  ipcRenderer.send('sign_in', params)
-}
+ipcMain.on('sign_in', async (event, data) => {
+  const response = await signIn(data)
+  event.reply('sign_in', response)
+})

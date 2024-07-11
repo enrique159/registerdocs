@@ -1,22 +1,25 @@
-const { ipcMain } = require('electron')
-const { getActors, getActorByNombre, createActor, deleteActor } = require('./actorsRepository.cjs')
+const { ipcRenderer } = require('electron')
 
-ipcMain.on('get_actors', async (event) => {
-  const response = await getActors()
-  event.reply('get_actors', response)
-})
+exports.getActors = function (callback) {
+  ipcRenderer.removeAllListeners('get_actors')
+  ipcRenderer.on('get_actors', (_, response) => callback(response))
+  ipcRenderer.send('get_actors')
+}
 
-ipcMain.on('get_actor_by_nombre', async (event, nombre) => {
-  const response = await getActorByNombre(nombre)
-  event.reply('get_actor_by_nombre', response)
-})
+exports.getActorByNombre = function (nombre, callback) {
+  ipcRenderer.removeAllListeners('get_actor_by_nombre')
+  ipcRenderer.on('get_actor_by_nombre', (_, response) => callback(response))
+  ipcRenderer.send('get_actor_by_nombre', nombre)
+}
 
-ipcMain.on('create_actor', async (event, actor) => {
-  const response = await createActor(actor)
-  event.reply('create_actor', response)
-})
+exports.createActor = function (actor, callback) {
+  ipcRenderer.removeAllListeners('create_actor')
+  ipcRenderer.on('create_actor', (_, response) => callback(response))
+  ipcRenderer.send('create_actor', actor)
+}
 
-ipcMain.on('delete_actor', async (event, nombre) => {
-  const response = await deleteActor(nombre)
-  event.reply('delete_actor', response)
-})
+exports.deleteActor = function (nombre, callback) {
+  ipcRenderer.removeAllListeners('delete_actor')
+  ipcRenderer.on('delete_actor', (_, response) => callback(response))
+  ipcRenderer.send('delete_actor', nombre)
+}

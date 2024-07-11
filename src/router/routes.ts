@@ -3,6 +3,7 @@ import NotFoundView from "@/views/NotFoundView.vue"
 import HomeView from "@/views/home/HomeView.vue"
 import CreateRegisterView from "@/views/registers/CreateRegisterView.vue"
 import SignInView from "@/views/auth/SignInView.vue"
+import SetupView from "@/views/auth/SetupView.vue"
 import MainView from "@/views/MainView.vue"
 
 const routes: RouteRecordRaw[] = [
@@ -33,6 +34,11 @@ const routes: RouteRecordRaw[] = [
     path: "/auth/signin",
     name: "SignIn",
     component: SignInView,
+  },
+  {
+    path: "/setup",
+    name: "Setup",
+    component: SetupView,
   },
   // // 404
   {

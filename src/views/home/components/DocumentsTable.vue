@@ -1,5 +1,5 @@
 <template>
-  <v-card flat style="overflow-y: auto">
+  <v-card class="bg-white-1" flat style="overflow-y: auto">
     <template #text>
       <div class="d-flex justify-space-between align-center ga-4">
         <v-text-field

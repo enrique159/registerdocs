@@ -1,5 +1,9 @@
 import { Area, AuthParams, Documento } from '@/api/interfaces'
 
+/* Configuration */
+export const getConfiguration = async (callback: any) => window.electron.getConfiguration(callback)
+export const updateConfiguration = async (configuration: any, callback: any) => window.electron.updateConfiguration(configuration, callback)
+
 /* Auth */
 export const signIn = async (auth: AuthParams, callback: any) => window.electron.signIn(auth, callback)
 

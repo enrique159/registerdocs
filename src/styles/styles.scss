@@ -101,9 +101,6 @@ button {
 
 input {
   outline: none;
-  &::placeholder {
-    font-weight: 600;
-  }
 }
 
 /* Firefox */
@@ -128,4 +125,8 @@ input {
 
 .v-menu .v-list {
   background: $color-white-0 !important;
+}
+
+.v-application {
+  background: $color-background !important;
 }

@@ -1,22 +1,25 @@
-const { ipcMain } = require('electron')
-const { getAreas, createArea, updateArea, deleteArea } = require('./areasRepository.cjs')
+const { ipcRenderer } = require('electron')
 
-ipcMain.on('get_areas', async (event) => {
-  const response = await getAreas()
-  event.reply('get_areas', response)
-})
+exports.getAreas = function (callback) {
+  ipcRenderer.removeAllListeners('get_areas')
+  ipcRenderer.on('get_areas', (_, response) => callback(response))
+  ipcRenderer.send('get_areas')
+}
 
-ipcMain.on('create_area', async (event, area) => {
-  const response = await createArea(area)
-  event.reply('create_area', response)
-})
+exports.createArea = function (area, callback) {
+  ipcRenderer.removeAllListeners('create_area')
+  ipcRenderer.on('create_area', (_, response) => callback(response))
+  ipcRenderer.send('create_area', area)
+}
 
-ipcMain.on('update_area', async (event, area) => {
-  const response = await updateArea(area)
-  event.reply('update_area', response)
-})
+exports.updateArea = function (area, callback) {
+  ipcRenderer.removeAllListeners('update_area')
+  ipcRenderer.on('update_area', (_, response) => callback(response))
+  ipcRenderer.send('update_area', area)
+}
 
-ipcMain.on('delete_area', async (event, id) => {
-  const response = await deleteArea(id)
-  event.reply('delete_area', response)
-})
+exports.deleteArea = function (id, callback) {
+  ipcRenderer.removeAllListeners('delete_area')
+  ipcRenderer.on('delete_area', (_, response) => callback(response))
+  ipcRenderer.send('delete_area', id)
+}

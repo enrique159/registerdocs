@@ -11,7 +11,7 @@ exports.createTable = async function(knex) {
     table.string('cargo')
     table.string('asunto')
     table.string('dirigido_a')
-    table.string('documento')
+    table.string('documento', 500)
     table.uuid('area_id').references('areas.id')
     table.uuid('user_id').references('users.id')
     table.datetime('created_at').defaultTo(knex.fn.now())

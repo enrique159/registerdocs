@@ -1,7 +1,7 @@
 <template>
-  <div class="create-register-view">
+  <div class="create-register-view px-8">
     <v-form ref="createDocumentFormRef" @submit.prevent>
-      <v-container>
+      <v-container class="max-w-1080-px">
         <v-row>
           <v-col cols="12" class="pb-0">
             <div class="d-flex justify-space-between align-center">
