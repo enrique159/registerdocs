@@ -239,7 +239,7 @@ const documento = ref<{ content: any, name: string}>({
 const area = ref(null)
 
 const areas = ref<Area[]>([
-  { id: 0, nombre: 'Cargando áreas...' },
+  { id: '', nombre: 'Cargando áreas...' },
 ])
 const actors = ref<string[]>([])
 

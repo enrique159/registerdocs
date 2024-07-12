@@ -5,6 +5,7 @@ export const DOCUMENT_TABLE_HEADERS = [
   { key: 'cargo', title: 'Cargo' },
   { key: 'asunto', title: 'Asunto' },
   { key: 'dirigido_a', title: 'Dirigido a' },
+  { key: 'area', title: 'Área/Departamento' },
   { key: 'documento', title: 'Documento', sortable: false,  },
 ]
 
