@@ -11,3 +11,9 @@ exports.getDocuments = function (callback) {
   ipcRenderer.on('get_documents', (_, response) => callback(response))
   ipcRenderer.send('get_documents')
 }
+
+exports.openDocument = function (params, callback) {
+  ipcRenderer.removeAllListeners('open_document')
+  ipcRenderer.on('open_document', (_, response) => callback(response))
+  ipcRenderer.send('open_document', params)
+}

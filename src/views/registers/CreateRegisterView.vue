@@ -227,11 +227,11 @@ const createDocumentFormRef = ref<null | HTMLFormElement>(null)
 const createAreaDialog = ref(false)
 
 const fecha = ref(new Date())
-const numero_oficio = ref('')
-const enviado_por = ref(null)
-const cargo = ref('')
-const asunto = ref('')
-const dirigido_a = ref(null)
+const numero_oficio = ref<string | null>('')
+const enviado_por = ref<string | null>(null)
+const cargo = ref<string | null>('')
+const asunto = ref<string | null>('')
+const dirigido_a = ref<string | null>(null)
 const selectedDocument = ref<any>(null)
 const documento = ref<{ content: any, name: string}>({ 
   content: '', name: '' 
@@ -251,10 +251,10 @@ const areaRequired = (v: Object) => v !== null || 'Selecciona un área'
 // Clear the form and reset validation
 const clearForm = () => {
   fecha.value = new Date()
-  numero_oficio.value = ''
+  numero_oficio.value = null
   enviado_por.value = null
-  cargo.value = ''
-  asunto.value = ''
+  cargo.value = null
+  asunto.value = null
   dirigido_a.value = null
   documento.value = { content: '', name: '' }
   selectedDocument.value = null
@@ -279,10 +279,10 @@ const onSubmit = async () => {
       try {
         const document: Partial<Documento> = {
           fecha: fecha.value,
-          numero_oficio: numero_oficio.value,
+          numero_oficio: numero_oficio.value ?? '',
           enviado_por: enviado_por.value ?? '',
-          cargo: cargo.value,
-          asunto: asunto.value,
+          cargo: cargo.value ?? '',
+          asunto: asunto.value ?? '',
           dirigido_a: dirigido_a.value ?? '',
           documento: { content: e.target?.result, name: file.name },
           area_id: area.value ?? '',
@@ -295,6 +295,7 @@ const onSubmit = async () => {
             error('Ocurrió un error al crear el documento')
           }
         })
+        clearForm()
       } catch (err) {
         console.error(err)
         error('Ocurrió un error al crear el documento')
@@ -302,7 +303,6 @@ const onSubmit = async () => {
     }
 
     reader.readAsArrayBuffer(file)
-    clearForm()
   }
 }
 

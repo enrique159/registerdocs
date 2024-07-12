@@ -29,25 +29,26 @@ function createWindow() {
   )
   // Open the DevTools.
   if (dev) {
+    console.log('[electron]: Opening DevTools')
     mainWindow.webContents.openDevTools()
   }
 }
 
 
-if (dev) {
-  console.log('[electron]: Development mode')
-  app.whenReady()
-    .then(() => require('electron-devtools-installer'))
-    .then(async({default: installExtension}) => {
-      installExtension({
-        id: 'ljjemllljcmogpfapbkkighbhhppjdbg',
-        electron: '>=1.2.1',
-      })
-        .then((name) => console.log(`[electron]: Added Extension: ${name}`))
-        .catch((err) => console.log('[electron]: An error occurred: ', err))
-    })
-    .catch((e) => console.error('[electron] Failed install extension:', e))
-}
+// if (dev) {
+//   console.log('[electron]: Development mode')
+//   app.whenReady()
+//     .then(() => require('electron-devtools-installer'))
+//     .then(async({default: installExtension}) => {
+//       installExtension({
+//         id: 'ljjemllljcmogpfapbkkighbhhppjdbg',
+//         electron: '>=1.2.1',
+//       })
+//         .then((name) => console.log(`[electron]: Added Extension: ${name}`))
+//         .catch((err) => console.log('[electron]: An error occurred: ', err))
+//     })
+//     .catch((e) => console.error('[electron] Failed install extension:', e))
+// }
 
 app.whenReady().then(() => {
   initDB().then(() => {

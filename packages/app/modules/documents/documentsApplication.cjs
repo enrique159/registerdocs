@@ -1,4 +1,4 @@
-const { ipcMain } = require('electron')
+const { ipcMain, shell } = require('electron')
 const documents = require('./documentsRepository.cjs')
 const { v4: uuidv4 } = require('uuid')
 const fs = require('fs')
@@ -50,4 +50,37 @@ ipcMain.on('create_document', async (event, data) => {
     logger.error({ type: 'CREATE DOCUMENT DB', message: 'Error al crear documento', error: err })
     event.reply('create_document', { success: false, message: 'Error al crear documento', error: err })
   }
+})
+
+ipcMain.on('open_document', async (event, params) => {
+  // Verify if the document exists in first place
+  if (!fs.existsSync(params.documentRoute)) {
+    logger.error({ type: 'OPEN DOCUMENT', message: 'El documento no existe en la ruta especificada', error: params })
+    event.reply('open_document', { success: false, message: 'El documento no existe', response: params })
+    return
+  }
+
+
+  // Open the document in the file explorer
+  try {
+    if (params.openFolder) {
+      shell.showItemInFolder(params.documentRoute)
+      event.reply('open_document', { success: true, message: 'Carpeta abierta', response: params })
+      return
+    }
+  } catch (err) {
+    logger.error({ type: 'OPEN DOCUMENT', message: 'Error al abrir carpeta', error: err })
+    event.reply('open_document', { success: false, message: 'Error al abrir carpeta', error: err })
+    return
+  }
+
+  // Open the document in the default application
+  await shell.openPath(params.documentRoute).then((result) => {
+    if (result) event.reply('open_document', { success: true, message: 'Documento abierto', response: params })
+    else event.reply('open_document', { success: false, message: 'Error al abrir documento', response: params })
+  })
+  .catch((err) => {
+    logger.error({ type: 'OPEN DOCUMENT', message: 'Error al abrir documento', error: err })
+    event.reply('open_document', { success: false, message: 'Error al abrir documento', error: err })
+  })
 })

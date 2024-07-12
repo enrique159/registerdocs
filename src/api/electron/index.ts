@@ -19,3 +19,4 @@ export const getActors = async (callback: any) => window.electron.getActors(call
 /* Documents */
 export const getDocuments = async (callback: any) => window.electron.getDocuments(callback)
 export const createDocument = async (document: Partial<Documento>, callback: any) => window.electron.createDocument(document, callback)
+export const openDocument = async (params: { documentRoute: string, openFolder?: boolean }, callback: any) => window.electron.openDocument(params, callback)
