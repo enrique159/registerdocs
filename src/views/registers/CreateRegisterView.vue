@@ -129,7 +129,7 @@
             <div class="h-100 d-flex flex-column justify-center">
               <v-tooltip text="Agregar área" location="bottom">
                 <template #activator="{ props }">
-                  <v-btn v-bind="props" color="dark" icon variant="tonal" @click="createAreaDialog = true">
+                  <v-btn v-bind="props" color="dark" icon variant="tonal"  @click="createAreaDialog = true" class="min-w-48-px">
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
@@ -146,7 +146,7 @@
             <label for="documento-input">Selecciona el documento</label>
             <v-file-input
               id="documento-input"
-              v-model="documento"
+              v-model="selectedDocument"
               variant="outlined"
               density="compact"
               placeholder="Seleccionar archivo"
@@ -232,7 +232,10 @@ const enviado_por = ref(null)
 const cargo = ref('')
 const asunto = ref('')
 const dirigido_a = ref(null)
-const documento = ref<null | File>(null)
+const selectedDocument = ref<any>(null)
+const documento = ref<{ content: any, name: string}>({ 
+  content: '', name: '' 
+})
 const area = ref(null)
 
 const areas = ref<Area[]>([
@@ -244,6 +247,8 @@ const actors = ref<string[]>([])
 const required = (v: string) => !!v || 'Este campo es requerido'
 const areaRequired = (v: Object) => v !== null || 'Selecciona un área'
 
+
+// Clear the form and reset validation
 const clearForm = () => {
   fecha.value = new Date()
   numero_oficio.value = ''
@@ -251,22 +256,23 @@ const clearForm = () => {
   cargo.value = ''
   asunto.value = ''
   dirigido_a.value = null
-  documento.value = null
+  documento.value = { content: '', name: '' }
+  selectedDocument.value = null
   area.value = null
 
-  createDocumentFormRef.value?.reset()
+  createDocumentFormRef.value?.resetValidation()
 }
 
 // Form Actions
 const onSubmit = async () => {
   await createDocumentFormRef.value?.validate()
   if (createDocumentFormRef.value?.isValid) {
-    if (!documento.value) {
-      console.log(documento.value)
+    if (!selectedDocument.value) {
+      console.log(selectedDocument.value)
       return warning('Selecciona un documento')
     }
 
-    const file = documento.value
+    const file = selectedDocument.value
     const reader = new FileReader()
 
     reader.onload = async (e) => {
@@ -282,10 +288,9 @@ const onSubmit = async () => {
           area_id: area.value ?? '',
           user_id: getUser.id,
         }
-        await createDocument(document, (response: any) => {
+        await createDocument(document,async (response: any) => {
           if (response.success) {
             success('Documento creado correctamente')
-            clearForm()
           } else {
             error('Ocurrió un error al crear el documento')
           }
@@ -297,6 +302,7 @@ const onSubmit = async () => {
     }
 
     reader.readAsArrayBuffer(file)
+    clearForm()
   }
 }
 
