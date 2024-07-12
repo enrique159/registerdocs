@@ -18,6 +18,7 @@ exports.updateConfiguration = async function (data) {
       return response(true, 'Configuración actualizada', response[0])
     })
     .catch((err) => {
+      logger.error({ type: 'UPDATE CONFIGURATION ERROR', message: err })
       return response(false, 'Error al actualizar la configuración', err)
     })
 }

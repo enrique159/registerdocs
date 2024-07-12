@@ -1,4 +1,5 @@
 const fs = require("fs")
+const { getDatetime } = require("./datetime.cjs")
 
 const FILES_LOGS_BY_TYPE = {
   info: "info.log",
@@ -13,7 +14,7 @@ async function writeLog(message, type) {
 
   const path = getLogPath(type)
 
-  message = `${new Date().toISOString()} | ${message} \n`
+  message = `${getDatetime()} | ${message} \n`
   fs.appendFile(
     path,
     message,

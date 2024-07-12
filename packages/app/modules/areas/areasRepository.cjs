@@ -1,5 +1,5 @@
 const knex = require('knex')(require('../../database/knexfile.cjs'))
-const { response } = require('../../helpers/index.cjs')
+const { response, logger } = require('../../helpers/index.cjs')
 
 exports.getAreas = async function () {
   return await knex('areas').select()
@@ -7,6 +7,7 @@ exports.getAreas = async function () {
       return response(true, 'Áreas encontradas', areas)
     })
     .catch((err) => {
+      logger.error({ type: 'GET AREAS', message: 'Error al buscar áreas', error: err })
       return response(false, 'Error al buscar áreas', err)
     })
 }
@@ -17,6 +18,7 @@ exports.createArea = async function (area) {
       return response(true, 'Área creada', newArea[0])
     })
     .catch((err) => {
+      logger.error({ type: 'CREATE AREA', message: 'Error al crear área', error: err })
       return response(false, 'Error al crear área', err)
     })
 }
@@ -27,6 +29,7 @@ exports.updateArea = async function (area) {
       return response(true, 'Área actualizada')
     })
     .catch((err) => {
+      logger.error({ type: 'UPDATE AREA', message: 'Error al actualizar área', error: err })
       return response(false, 'Error al actualizar área', err)
     })
 }
@@ -37,6 +40,7 @@ exports.deleteArea = async function (id) {
       return response(true, 'Área eliminada')
     })
     .catch((err) => {
+      logger.error({ type: 'DELETE AREA', message: 'Error al eliminar área', error: err })  
       return response(false, 'Error al eliminar área', err)
     })
 }
