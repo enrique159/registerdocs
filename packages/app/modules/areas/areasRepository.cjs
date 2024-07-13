@@ -13,6 +13,11 @@ exports.getAreas = async function () {
 }
 
 exports.createArea = async function (area) {
+  const areaExists = await knex('areas').where('nombre', area.nombre).select()
+  if (areaExists.length > 0) {
+    logger.warning({ type: 'CREATE AREA', message: 'El nombre del área ya existe', area: areaExists })
+    return response(false, 'El nombre del área ya existe', areaExists)
+  }
   return await knex('areas').insert(area).returning('*')
     .then((newArea) => {
       return response(true, 'Área creada', newArea[0])

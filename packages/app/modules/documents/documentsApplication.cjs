@@ -75,9 +75,8 @@ ipcMain.on('open_document', async (event, params) => {
   }
 
   // Open the document in the default application
-  await shell.openPath(params.documentRoute).then((result) => {
-    if (result) event.reply('open_document', { success: true, message: 'Documento abierto', response: params })
-    else event.reply('open_document', { success: false, message: 'Error al abrir documento', response: params })
+  await shell.openPath(params.documentRoute).then(() => {
+    event.reply('open_document', { success: true, message: 'Documento abierto', response: params })
   })
   .catch((err) => {
     logger.error({ type: 'OPEN DOCUMENT', message: 'Error al abrir documento', error: err })

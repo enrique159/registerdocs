@@ -205,6 +205,8 @@
               color="primary"
               text="Agegar"
               variant="tonal"
+              :disabled="loadingCreateArea === LoadingStates.LOADING"
+              :loading="loadingCreateArea === LoadingStates.LOADING"
               @click="createNewArea"
             ></v-btn>
           </v-card-actions>
@@ -219,6 +221,7 @@ import { getAreas, getActors, createArea, createDocument } from '@/api/electron'
 import { useToasts } from '@/composables/useToasts';
 import { useAppStore } from '@/stores/appStore';
 import type { Area, Documento } from '@/api/interfaces'
+import { LoadingState, LoadingStates } from '@/types';
 
 const { warning, success, error } = useToasts()
 const { getUser } = useAppStore()
@@ -308,11 +311,14 @@ const onSubmit = async () => {
 
 // Área Dialog
 const newArea = ref('')
+const loadingCreateArea = ref<LoadingState>(LoadingStates.IDLE)
 
 const createNewArea = async () => {
   if (newArea.value === '' || newArea.value === null) {
     return warning('Ingresa un nombre para el área')
   }
+
+  loadingCreateArea.value = LoadingStates.LOADING
 
   await createArea({ nombre: newArea.value}, async (response: any) => {
     if (response.success) {
@@ -320,13 +326,14 @@ const createNewArea = async () => {
       await getAreas((allAreas: any) => {
         areas.value = allAreas.response
       })
+      createAreaDialog.value = false
       area.value = response.response.id
       newArea.value = ''
-      createAreaDialog.value = false
 
     } else {
       error('Ocurrió un error al crear el área')
     }
+    loadingCreateArea.value = LoadingStates.IDLE
   })
 }
 
@@ -361,5 +368,6 @@ label {
   padding-top: 7px;
   padding-bottom: 7px;
   border: 1px solid #a1a1a1;
+  background: none;
 }
 </style>
