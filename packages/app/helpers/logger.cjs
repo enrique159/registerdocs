@@ -1,57 +1,40 @@
-const fs = require("fs")
-const { getDatetime } = require("./datetime.cjs")
+const fs = require("fs").promises;
+const { getDatetime } = require("./datetime.cjs");
 
 const FILES_LOGS_BY_TYPE = {
   info: "info.log",
   error: "error.log",
   warning: "warning.log",
-}
+};
 
 async function writeLog(message, type) {
+  const path = getLogPath(type);
+
   if (typeof message === "object") {
-    message = JSON.stringify(message)
+    message = JSON.stringify(message);
   }
 
-  const path = getLogPath(type)
+  const logMessage = `${getDatetime()} | ${message}\n`;
 
-  message = `${getDatetime()} | ${message} \n`
-  fs.appendFile(
-    path,
-    message,
-    { encoding: "utf8", mode: 0o666, flag: "a" },
-    handleResultLogger
-  )
-}
-
-function handleResultLogger(error) {
-  // eslint-disable-next-line no-console
-  if (error) console.log(error)
+  try {
+    await fs.appendFile(path, logMessage, { encoding: "utf8", mode: 0o666 });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function getLogPath(type) {
-  const path = "logs"
-  const file = FILES_LOGS_BY_TYPE[type] || FILES_LOGS_BY_TYPE.error
-  if (!fs.existsSync(path)) fs.mkdirSync(path)
-
-  return `${path}/${file}`
+  const dir = "logs";
+  const file = FILES_LOGS_BY_TYPE[type] || FILES_LOGS_BY_TYPE.error;
+  fs.mkdir(dir, { recursive: true }).catch(console.error);
+  return `${dir}/${file}`;
 }
 
-async function error(message) {
-  return writeLog(message, "error")
-}
+const logger = {
+  log: (message, type) => writeLog(message, type),
+  error: (message) => writeLog(message, "error"),
+  info: (message) => writeLog(message, "info"),
+  warning: (message) => writeLog(message, "warning"),
+};
 
-async function info(message) {
-  return writeLog(message, "info")
-}
-
-async function warning(message) {
-  return writeLog(message, "warning")
-}
-
-
-module.exports = {
-  log: writeLog,
-  error,
-  warning,
-  info,
-}
+module.exports = logger;

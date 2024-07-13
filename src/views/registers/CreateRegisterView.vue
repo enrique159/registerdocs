@@ -220,7 +220,7 @@ import { ref, onBeforeMount } from 'vue'
 import { getAreas, getActors, createArea, createDocument } from '@/api/electron'
 import { useToasts } from '@/composables/useToasts';
 import { useAppStore } from '@/stores/appStore';
-import type { Area, Documento } from '@/api/interfaces'
+import type { Actor, Area, Documento, Response } from '@/api/interfaces'
 import { LoadingState, LoadingStates } from '@/types';
 
 const { warning, success, error } = useToasts()
@@ -239,7 +239,7 @@ const selectedDocument = ref<any>(null)
 const documento = ref<{ content: any, name: string}>({ 
   content: '', name: '' 
 })
-const area = ref(null)
+const area = ref<string | null>(null)
 
 const areas = ref<Area[]>([
   { id: '', nombre: 'Cargando áreas...' },
@@ -291,9 +291,12 @@ const onSubmit = async () => {
           area_id: area.value ?? '',
           user_id: getUser.id,
         }
-        await createDocument(document,async (response: any) => {
+        await createDocument(document,async (response: Response<Documento>) => {
           if (response.success) {
             success('Documento creado correctamente')
+            await getActors((allActors: Response<Actor[]>) => {
+              actors.value = allActors.response.map((actor: Actor) => actor.nombre)
+            })
           } else {
             error('Ocurrió un error al crear el documento')
           }
@@ -320,10 +323,10 @@ const createNewArea = async () => {
 
   loadingCreateArea.value = LoadingStates.LOADING
 
-  await createArea({ nombre: newArea.value}, async (response: any) => {
+  await createArea({ nombre: newArea.value}, async (response: Response<Area>) => {
     if (response.success) {
       success('Área creada correctamente')
-      await getAreas((allAreas: any) => {
+      await getAreas((allAreas: Response<Area[]>) => {
         areas.value = allAreas.response
       })
       createAreaDialog.value = false
@@ -339,11 +342,11 @@ const createNewArea = async () => {
 
 // Hook Cycles
 onBeforeMount(async () => {
-  await getAreas((allAreas: any) => {
+  await getAreas((allAreas: Response<Area[]>) => {
     areas.value = allAreas.response
   })
-  await getActors((allActors: any) => {
-    actors.value = allActors.response.map((actor: any) => actor.nombre)
+  await getActors((allActors: Response<Actor[]>) => {
+    actors.value = allActors.response.map((actor: Actor) => actor.nombre)
   })
 })
 

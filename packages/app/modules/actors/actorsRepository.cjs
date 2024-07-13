@@ -13,9 +13,10 @@ exports.getActors = async function () {
 }
 
 exports.getActorByNombre = async function (nombre) {
-  return await knex('actors').where('nombre', nombre).select()
+  return await knex('actors').where('nombre', nombre).select().first()
     .then((actor) => {
-      return response(true, 'Actor encontrado', actor)
+      if (!actor) return response(false, 'Actor no encontrado', nombre)
+      return response(true, 'Actor encontrado', actors)
     })
     .catch((err) => {
       logger.error({ type: 'GET ACTOR BY NOMBRE', message: 'Error al buscar actor', error: err })

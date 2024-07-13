@@ -2,6 +2,7 @@ import { AuthParams } from './auth'
 import { Area } from './areas'
 import { Documento } from './documents'
 import { Configuration } from './configuration'
+import { Actor } from './actors'
 
 interface Response<T> {
   success: boolean
@@ -9,4 +10,4 @@ interface Response<T> {
   response: T
 }
 
-export type { AuthParams, Area, Documento, Configuration, Response }
+export type { AuthParams, Area, Documento, Configuration, Actor, Response }

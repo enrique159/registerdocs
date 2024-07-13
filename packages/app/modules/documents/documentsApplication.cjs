@@ -1,5 +1,6 @@
 const { ipcMain, shell } = require('electron')
 const documents = require('./documentsRepository.cjs')
+const actors = require('../actors/actorsRepository.cjs')
 const { v4: uuidv4 } = require('uuid')
 const fs = require('fs')
 const path = require('path')
@@ -37,6 +38,12 @@ ipcMain.on('create_document', async (event, data) => {
         id,
         documento: destinationPath.toString()
       }
+
+      const dirigidoAExists = await actors.getActorByNombre(document.dirigido_a)
+      if (!dirigidoAExists.success) await actors.createActor({ nombre: document.dirigido_a })
+      const enviadoPorExists = await actors.getActorByNombre(document.enviado_por)
+      if (!enviadoPorExists.success) await actors.createActor({ nombre: document.enviado_por })
+
       await documents.createDocument(document)
         .then((response) => {
           event.reply('create_document', response)
@@ -79,6 +86,7 @@ ipcMain.on('open_document', async (event, params) => {
     event.reply('open_document', { success: true, message: 'Documento abierto', response: params })
   })
   .catch((err) => {
+    console.log(err)
     logger.error({ type: 'OPEN DOCUMENT', message: 'Error al abrir documento', error: err })
     event.reply('open_document', { success: false, message: 'Error al abrir documento', error: err })
   })
