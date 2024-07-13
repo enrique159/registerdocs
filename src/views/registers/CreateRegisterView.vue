@@ -220,10 +220,12 @@ import { ref, onBeforeMount } from 'vue'
 import { getAreas, getActors, createArea, createDocument } from '@/api/electron'
 import { useToasts } from '@/composables/useToasts';
 import { useAppStore } from '@/stores/appStore';
+import { useFormat } from '@/composables/useFormat';
 import type { Actor, Area, Documento, Response } from '@/api/interfaces'
 import { LoadingState, LoadingStates } from '@/types';
 
 const { warning, success, error } = useToasts()
+const { formatDate } = useFormat()
 const { getUser } = useAppStore()
 
 const createDocumentFormRef = ref<null | HTMLFormElement>(null)
@@ -349,15 +351,6 @@ onBeforeMount(async () => {
     actors.value = allActors.response.map((actor: Actor) => actor.nombre)
   })
 })
-
-// Formating
-const formatDate = (date: Date) => {
-  const day = date.getDate()
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
-
-  return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`
-}
 </script>
 
 <style lang="scss" scoped>

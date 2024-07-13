@@ -1,5 +1,5 @@
 <template>
-  <v-card class="bg-white-1 h-100" flat style="overflow-y: auto">
+  <v-card class="bg-white-1 h-100 px-7 pb-7" flat style="overflow-y: auto">
     <template #text>
       <v-row>
         <!-- SEARCH BAR -->
@@ -88,22 +88,36 @@
       :items-per-page-text="'Cantidad de registros por página'"
       :items-per-page-options="itemsPerPageOptions"
       :loading="loadingState === LoadingStates.LOADING"
+      density="comfortable"
+      hover
     >
       <template #item.fecha="{ item }">
         <span>{{ moment(item.fecha).tz('America/Mazatlan').format('DD/MM/YYYY') }}</span>
       </template>
       <template #item.documento="{ item }">
-        <v-tooltip text="Abrir documento" location="left">
+        <div class="d-flex flex-nowrap align-center">
+          <v-tooltip text="Abrir documento" location="left">
+            <template #activator="{ props }">
+              <v-btn v-bind="props" icon variant="plain" color="primary" size="small" @click="openDocumentSelected({ documentRoute: item.documento })">
+                <v-icon>mdi-file-document</v-icon>
+              </v-btn>
+            </template>
+          </v-tooltip>
+          <v-tooltip text="Abrir carpeta" location="left">
+            <template #activator="{ props }">
+              <v-btn v-bind="props" icon variant="plain" color="warning" size="small" @click="openDocumentSelected({ documentRoute: item.documento, openFolder: true })">
+                <v-icon>mdi-folder</v-icon>
+              </v-btn>
+            </template>
+          </v-tooltip>
+        </div>
+      </template>
+
+      <template #item.actions="{ item }">
+        <v-tooltip text="ver más" location="left">
           <template #activator="{ props }">
-            <v-btn v-bind="props" icon variant="plain" color="primary" @click="openDocumentSelected({ documentRoute: item.documento })">
-              <v-icon>mdi-file-document</v-icon>
-            </v-btn>
-          </template>
-        </v-tooltip>
-        <v-tooltip text="Abrir carpeta" location="left">
-          <template #activator="{ props }">
-            <v-btn v-bind="props" icon variant="plain" color="warning" @click="openDocumentSelected({ documentRoute: item.documento, openFolder: true })">
-              <v-icon>mdi-folder</v-icon>
+            <v-btn v-bind="props" icon variant="plain" color="purple" size="small" @click="emits('open-document-dialog', item)">
+              <v-icon>mdi-information-outline</v-icon>
             </v-btn>
           </template>
         </v-tooltip>
@@ -126,10 +140,14 @@ import { getDocuments, openDocument, getAreas } from '@/api/electron';
 import { Area, Documento, Response } from '@/api/interfaces';
 import { LoadingState, LoadingStates } from '@/types';
 import { useToasts } from '@/composables/useToasts';
+import { useFormat } from '@/composables/useFormat';
 import moment from 'moment-timezone';
+
+const emits = defineEmits(['open-document-dialog'])
 
 const loadingState = ref<LoadingState>(LoadingStates.IDLE)
 const { error } = useToasts()
+const { formatDate } = useFormat()
 
 // Data
 const documentRegisters = ref<Documento[]>([])
@@ -187,15 +205,6 @@ const openDocumentSelected = (params: { documentRoute: string, openFolder?: bool
   openDocument(params, (response: Response<boolean>) => {
     if (!response.success) error(response.message)
   });
-}
-
-// Formating
-const formatDate = (date: Date) => {
-  const day = date.getDate()
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
-
-  return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`
 }
 </script>
 

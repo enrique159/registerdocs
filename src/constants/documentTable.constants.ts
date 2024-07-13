@@ -7,6 +7,7 @@ export const DOCUMENT_TABLE_HEADERS = [
   { key: 'dirigido_a', title: 'Dirigido a' },
   { key: 'area', title: 'Área/Departamento' },
   { key: 'documento', title: 'Documento', sortable: false,  },
+  { key: 'actions', title: 'Acciones', sortable: false},
 ]
 
 export const DOCUMENT_TABLE_ITEMS_PER_PAGE_OPTIONS = [
