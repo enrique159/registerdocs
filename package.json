@@ -68,6 +68,9 @@
     "files": [
       "dist/**/*",
       "packages/**/*"
-    ]
+    ],
+    "win": {
+      "icon": "./public/icon.png"
+    }
   }
 }
