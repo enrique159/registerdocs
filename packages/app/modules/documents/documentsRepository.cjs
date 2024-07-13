@@ -13,7 +13,7 @@ exports.createDocument = async function (data) {
 }
 
 exports.getDocuments = async function () {
-  return await knex('documents').select()
+  return await knex('documents').join('areas', 'documents.area_id', '=', 'areas.id').select('documents.*', 'areas.nombre as area')
     .then((data) => {
       return response(true, 'Documentos encontrados', data)
     })

@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
-const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer');
 const path = require('path')
 const env = require('./env.json')
 const initDB = require('./app/database/index.cjs')
@@ -36,13 +35,14 @@ function createWindow() {
 }
 
 
-if (dev) {
-  app.whenReady().then(() => {
-    installExtension(VUEJS_DEVTOOLS)
-      .then((name) => console.log(`[electron]: Added Extension:  ${name}`))
-      .catch((err) => console.log('[electron]: An error occurred: ', err));
-  });
-}
+// if (dev) {
+//   const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer');
+//   app.whenReady().then(() => {
+//     installExtension(VUEJS_DEVTOOLS)
+//       .then((name) => console.log(`[electron]: Added Extension:  ${name}`))
+//       .catch((err) => console.log('[electron]: An error occurred: ', err));
+//   });
+// }
 
 app.whenReady().then(() => {
   initDB().then(() => {

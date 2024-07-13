@@ -84,7 +84,7 @@
       :headers="headers"
       :items="registers"
       :search="search"
-      :items-per-page="5"
+      :items-per-page="10"
       :items-per-page-text="'Cantidad de registros por página'"
       :items-per-page-options="itemsPerPageOptions"
       :loading="loadingState === LoadingStates.LOADING"
@@ -125,9 +125,11 @@ import { onBeforeMount, ref, computed } from 'vue'
 import { getDocuments, openDocument, getAreas } from '@/api/electron';
 import { Area, Documento, Response } from '@/api/interfaces';
 import { LoadingState, LoadingStates } from '@/types';
+import { useToasts } from '@/composables/useToasts';
 import moment from 'moment-timezone';
 
 const loadingState = ref<LoadingState>(LoadingStates.IDLE)
+const { error } = useToasts()
 
 // Data
 const documentRegisters = ref<Documento[]>([])
@@ -142,14 +144,7 @@ const filteredAreas = ref<string[]>([])
 
 // Document Registers filtered
 const registers = computed(() => {
-  if (!documentRegisters.value.length) return [];
-
-  documentRegisters.value = documentRegisters.value.map((register: Documento) => {
-    return {
-      ...register,
-      area: areas.value.find((area: Area) => area.id === register.area_id)?.nombre
-    }
-  });
+  if (!documentRegisters.value.length) return [];;
 
   // Preparar fechas de inicio y fin fuera del bucle para optimizar
   const start = dateRangeStart.value ? moment(dateRangeStart.value) : moment('01/01/1900', 'DD/MM/YYYY');
@@ -176,23 +171,21 @@ const registers = computed(() => {
 onBeforeMount(() => {
   loadingState.value = LoadingStates.LOADING
   getDocuments((response: Response<Documento[]>) => {
-    if (response.success) {
-      documentRegisters.value = response.response
-    }
+    if (!response.success) error(response.message)
+
+    documentRegisters.value = response.response
     loadingState.value = LoadingStates.IDLE
   });
   getAreas((response: Response<Area[]>) => {
-    if (response.success) {
-      areas.value = response.response.sort((a, b) => a.nombre.localeCompare(b.nombre))
-    }
+    if (!response.success) error(response.message)
+
+    areas.value = response.response.sort((a, b) => a.nombre.localeCompare(b.nombre))
   });
 })
 
 const openDocumentSelected = (params: { documentRoute: string, openFolder?: boolean}) => {
   openDocument(params, (response: Response<boolean>) => {
-    if (response.success) {
-      console.log('Documento abierto')
-    }
+    if (!response.success) error(response.message)
   });
 }
 
