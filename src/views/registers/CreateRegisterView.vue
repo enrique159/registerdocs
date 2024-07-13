@@ -5,12 +5,16 @@
         <v-row>
           <v-col cols="12" class="pb-0">
             <div class="d-flex justify-space-between align-center">
-              <p class="ts-b3 tc-textdark tw-bold">
-                Datos del registro
-              </p>
+              <p class="ts-b3 tc-textdark tw-bold">Datos del registro</p>
               <v-tooltip text="Reiniciar formulario" location="left">
                 <template #activator="{ props }">
-                  <v-btn v-bind="props" color="dark" icon variant="flat" @click="clearForm">
+                  <v-btn
+                    v-bind="props"
+                    color="dark"
+                    icon
+                    variant="flat"
+                    @click="clearForm"
+                  >
                     <v-icon>mdi-refresh</v-icon>
                   </v-btn>
                 </template>
@@ -18,9 +22,7 @@
             </div>
           </v-col>
           <v-col cols="4" md="3" class="pb-0">
-            <label for="fecha-input">
-              Fecha
-            </label>
+            <label for="fecha-input"> Fecha </label>
             <date-picker
               v-model="fecha"
               locale="es"
@@ -55,9 +57,7 @@
           </v-col>
 
           <v-col cols="12" class="pb-0">
-            <p class="ts-b3 tc-textdark tw-bold">
-              Información de contacto
-            </p>
+            <p class="ts-b3 tc-textdark tw-bold">Información de contacto</p>
           </v-col>
           <v-col cols="6" class="pb-0">
             <label for="enviado-por-input">Enviado por</label>
@@ -129,7 +129,14 @@
             <div class="h-100 d-flex flex-column justify-center">
               <v-tooltip text="Agregar área" location="bottom">
                 <template #activator="{ props }">
-                  <v-btn v-bind="props" color="dark" icon variant="tonal"  @click="createAreaDialog = true" class="min-w-48-px">
+                  <v-btn
+                    v-bind="props"
+                    color="dark"
+                    icon
+                    variant="tonal"
+                    @click="createAreaDialog = true"
+                    class="min-w-48-px"
+                  >
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
@@ -138,9 +145,7 @@
           </v-col>
 
           <v-col cols="12" class="pb-0">
-            <p class="ts-b3 tc-textdark tw-bold">
-              Documento escaneado
-            </p>
+            <p class="ts-b3 tc-textdark tw-bold">Documento escaneado</p>
           </v-col>
           <v-col cols="12" class="pb-0">
             <label for="documento-input">Selecciona el documento</label>
@@ -165,64 +170,63 @@
         </v-row>
       </v-container>
     </v-form>
-    <v-dialog
-        v-model="createAreaDialog"
-        max-width="600"
-      >
-        <v-card
-          prepend-icon="mdi-select-place"
-          title="Agregar nueva área"
-        >
-          <v-card-text>
-            <v-row dense>
-              <v-col cols="12">
-                <label for="new-area-input">Nombre del área</label>
-                <v-text-field
-                  id="new-area-input"
-                  v-model="newArea"
-                  placeholder="Ej. Dirección de sistemas"
-                  :rules="[required]"
-                  outlined
-                  dense 
-                  @keydown.enter="createNewArea"
-                />
-              </v-col>
-            </v-row>
-          </v-card-text>
-  
-          <v-divider></v-divider>
-  
-          <v-card-actions>
-            <v-spacer></v-spacer>
-  
-            <v-btn
-              text="Cerrar"
-              variant="plain"
-              @click="createAreaDialog = false"
-            ></v-btn>
-  
-            <v-btn
-              color="primary"
-              text="Agegar"
-              variant="tonal"
-              :disabled="loadingCreateArea === LoadingStates.LOADING"
-              :loading="loadingCreateArea === LoadingStates.LOADING"
-              @click="createNewArea"
-            ></v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+    <v-dialog v-model="createAreaDialog" max-width="600">
+      <v-card prepend-icon="mdi-domain-plus" title="Agregar nueva área">
+        <v-card-text>
+          <v-row dense>
+            <v-col cols="12">
+              <label for="new-area-input">Nombre del área</label>
+              <v-text-field
+                id="new-area-input"
+                v-model="newArea"
+                placeholder="Ej. Dirección de sistemas"
+                :rules="[required]"
+                outlined
+                dense
+                @keydown.enter="createNewArea"
+              />
+            </v-col>
+          </v-row>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            text="Cerrar"
+            variant="plain"
+            @click="createAreaDialog = false"
+          ></v-btn>
+
+          <v-btn
+            color="primary"
+            text="Agegar"
+            variant="tonal"
+            :disabled="loadingCreateArea === LoadingStates.LOADING"
+            :loading="loadingCreateArea === LoadingStates.LOADING"
+            @click="createNewArea"
+          ></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from 'vue'
-import { getAreas, getActors, createArea, createDocument } from '@/api/electron'
-import { useToasts } from '@/composables/useToasts';
-import { useAppStore } from '@/stores/appStore';
-import { useFormat } from '@/composables/useFormat';
-import type { Actor, Area, Documento, Response } from '@/api/interfaces'
-import { LoadingState, LoadingStates } from '@/types';
+import { ref, onBeforeMount } from "vue"
+import {
+  getAreas,
+  getActors,
+  createArea,
+  createDocument,
+} from "@/api/electron"
+import { useToasts } from "@/composables/useToasts"
+import { useAppStore } from "@/stores/appStore"
+import { useFormat } from "@/composables/useFormat"
+import type { Actor, Area, Documento, Response } from "@/api/interfaces"
+import { LoadingState, LoadingStates } from "@/types"
 
 const { warning, success, error } = useToasts()
 const { formatDate } = useFormat()
@@ -232,26 +236,24 @@ const createDocumentFormRef = ref<null | HTMLFormElement>(null)
 const createAreaDialog = ref(false)
 
 const fecha = ref(new Date())
-const numero_oficio = ref<string | null>('')
+const numero_oficio = ref<string | null>("")
 const enviado_por = ref<string | null>(null)
-const cargo = ref<string | null>('')
-const asunto = ref<string | null>('')
+const cargo = ref<string | null>("")
+const asunto = ref<string | null>("")
 const dirigido_a = ref<string | null>(null)
 const selectedDocument = ref<any>(null)
-const documento = ref<{ content: any, name: string}>({ 
-  content: '', name: '' 
+const documento = ref<{ content: any; name: string }>({
+  content: "",
+  name: "",
 })
 const area = ref<string | null>(null)
 
-const areas = ref<Area[]>([
-  { id: '', nombre: 'Cargando áreas...' },
-])
+const areas = ref<Area[]>([{ id: "", nombre: "Cargando áreas..." }])
 const actors = ref<string[]>([])
 
 // Rules
-const required = (v: string) => !!v || 'Este campo es requerido'
-const areaRequired = (v: Object) => v !== null || 'Selecciona un área'
-
+const required = (v: string) => !!v || "Este campo es requerido"
+const areaRequired = (v: Object) => v !== null || "Selecciona un área"
 
 // Clear the form and reset validation
 const clearForm = () => {
@@ -261,7 +263,7 @@ const clearForm = () => {
   cargo.value = null
   asunto.value = null
   dirigido_a.value = null
-  documento.value = { content: '', name: '' }
+  documento.value = { content: "", name: "" }
   selectedDocument.value = null
   area.value = null
 
@@ -274,7 +276,7 @@ const onSubmit = async () => {
   if (createDocumentFormRef.value?.isValid) {
     if (!selectedDocument.value) {
       console.log(selectedDocument.value)
-      return warning('Selecciona un documento')
+      return warning("Selecciona un documento")
     }
 
     const file = selectedDocument.value
@@ -284,29 +286,34 @@ const onSubmit = async () => {
       try {
         const document: Partial<Documento> = {
           fecha: fecha.value,
-          numero_oficio: numero_oficio.value ?? '',
-          enviado_por: enviado_por.value ?? '',
-          cargo: cargo.value ?? '',
-          asunto: asunto.value ?? '',
-          dirigido_a: dirigido_a.value ?? '',
+          numero_oficio: numero_oficio.value ?? "",
+          enviado_por: enviado_por.value ?? "",
+          cargo: cargo.value ?? "",
+          asunto: asunto.value ?? "",
+          dirigido_a: dirigido_a.value ?? "",
           documento: { content: e.target?.result, name: file.name },
-          area_id: area.value ?? '',
+          area_id: area.value ?? "",
           user_id: getUser.id,
         }
-        await createDocument(document,async (response: Response<Documento>) => {
-          if (response.success) {
-            success('Documento creado correctamente')
-            await getActors((allActors: Response<Actor[]>) => {
-              actors.value = allActors.response.map((actor: Actor) => actor.nombre)
-            })
-          } else {
-            error('Ocurrió un error al crear el documento')
+        await createDocument(
+          document,
+          async (response: Response<Documento>) => {
+            if (response.success) {
+              success("Documento creado correctamente")
+              await getActors((allActors: Response<Actor[]>) => {
+                actors.value = allActors.response.map(
+                  (actor: Actor) => actor.nombre
+                )
+              })
+            } else {
+              error("Ocurrió un error al crear el documento")
+            }
           }
-        })
+        )
         clearForm()
       } catch (err) {
         console.error(err)
-        error('Ocurrió un error al crear el documento')
+        error("Ocurrió un error al crear el documento")
       }
     }
 
@@ -315,31 +322,33 @@ const onSubmit = async () => {
 }
 
 // Área Dialog
-const newArea = ref('')
+const newArea = ref("")
 const loadingCreateArea = ref<LoadingState>(LoadingStates.IDLE)
 
 const createNewArea = async () => {
-  if (newArea.value === '' || newArea.value === null) {
-    return warning('Ingresa un nombre para el área')
+  if (newArea.value === "" || newArea.value === null) {
+    return warning("Ingresa un nombre para el área")
   }
 
   loadingCreateArea.value = LoadingStates.LOADING
 
-  await createArea({ nombre: newArea.value}, async (response: Response<Area>) => {
-    if (response.success) {
-      success('Área creada correctamente')
-      await getAreas((allAreas: Response<Area[]>) => {
-        areas.value = allAreas.response
-      })
-      createAreaDialog.value = false
-      area.value = response.response.id
-      newArea.value = ''
-
-    } else {
-      error('Ocurrió un error al crear el área')
+  await createArea(
+    { nombre: newArea.value },
+    async (response: Response<Area>) => {
+      if (response.success) {
+        success("Área creada correctamente")
+        await getAreas((allAreas: Response<Area[]>) => {
+          areas.value = allAreas.response
+        })
+        createAreaDialog.value = false
+        area.value = response.response.id
+        newArea.value = ""
+      } else {
+        error("Ocurrió un error al crear el área")
+      }
+      loadingCreateArea.value = LoadingStates.IDLE
     }
-    loadingCreateArea.value = LoadingStates.IDLE
-  })
+  )
 }
 
 // Hook Cycles
