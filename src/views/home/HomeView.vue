@@ -20,6 +20,7 @@ const dialog = ref(false)
 const selectedDocument = ref<Documento | null>(null)
 
 const openDocumentDialog = (document: Documento) => {
+  console.log(document)
   selectedDocument.value = document
   dialog.value = true
 }

@@ -17,3 +17,9 @@ exports.openDocument = function (params, callback) {
   ipcRenderer.on('open_document', (_, response) => callback(response))
   ipcRenderer.send('open_document', params)
 }
+
+exports.deleteDocument = function (id, callback) {
+  ipcRenderer.removeAllListeners('delete_document')
+  ipcRenderer.on('delete_document', (_, response) => callback(response))
+  ipcRenderer.send('delete_document', id)
+}

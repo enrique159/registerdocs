@@ -2,7 +2,7 @@ const { contextBridge, ipcRenderer } = require('electron')
 const { signIn } = require('./app/modules/auth/authListeners.cjs')
 const { getAreas, createArea, updateArea, deleteArea } = require('./app/modules/areas/areasListeners.cjs')
 const { getActors, getActorByNombre, createActor, deleteActor } = require('./app/modules/actors/actorsListeners.cjs')
-const { createDocument, getDocuments, openDocument } = require('./app/modules/documents/documentsListeners.cjs')
+const { createDocument, getDocuments, openDocument, deleteDocument } = require('./app/modules/documents/documentsListeners.cjs')
 const { getConfiguration, updateConfiguration } = require('./app/modules/configuration/configurationListeners.cjs')
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -36,6 +36,7 @@ contextBridge.exposeInMainWorld('electron', {
   getDocuments,
   createDocument,
   openDocument,
+  deleteDocument,
   // Extras
   closeApp: () => ipcRenderer.send('close_app'),
 })

@@ -89,6 +89,7 @@
       :items-per-page-options="itemsPerPageOptions"
       :loading="loadingState === LoadingStates.LOADING"
       density="comfortable"
+      @click:row="(_: Event, row: any) => emits('open-document-dialog', row.item)"
       hover
     >
       <template #item.fecha="{ item }">
@@ -114,10 +115,10 @@
       </template>
 
       <template #item.actions="{ item }">
-        <v-tooltip text="ver más" location="left">
+        <v-tooltip text="Eliminar" location="left">
           <template #activator="{ props }">
-            <v-btn v-bind="props" icon variant="plain" color="purple" size="small" @click="emits('open-document-dialog', item)">
-              <v-icon>mdi-information-outline</v-icon>
+            <v-btn v-bind="props" icon variant="plain" color="red" size="small" @click.stop="showDeleteModal(item)">
+              <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
           </template>
         </v-tooltip>
@@ -127,6 +128,19 @@
         <v-skeleton-loader type="table-row@5"></v-skeleton-loader>
       </template>
     </v-data-table>
+
+    <v-dialog v-model="deleteModal" max-width="400">
+      <v-card>
+        <v-card-title class="tc-text-dark tw-bold">Eliminar documento</v-card-title>
+        <v-card-text class="tc-text-dark">
+          ¿Estás seguro de que deseas eliminar el documento?
+        </v-card-text>
+        <v-card-actions>
+          <v-btn class="btn-base" color="primary" text @click="deleteModal = false">Cancelar</v-btn>
+          <v-btn class="btn-base" color="red" text @click="confirmDeleteDocument">Eliminar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -136,7 +150,7 @@ import {
   DOCUMENT_TABLE_ITEMS_PER_PAGE_OPTIONS as itemsPerPageOptions
 } from '@/constants/documentTable.constants';
 import { onBeforeMount, ref, computed } from 'vue'
-import { getDocuments, openDocument, getAreas } from '@/api/electron';
+import { getDocuments, openDocument, getAreas, deleteDocument } from '@/api/electron';
 import { Area, Documento, Response } from '@/api/interfaces';
 import { LoadingState, LoadingStates } from '@/types';
 import { useToasts } from '@/composables/useToasts';
@@ -146,7 +160,7 @@ import moment from 'moment-timezone';
 const emits = defineEmits(['open-document-dialog'])
 
 const loadingState = ref<LoadingState>(LoadingStates.IDLE)
-const { error } = useToasts()
+const { error, info } = useToasts()
 const { formatDate } = useFormat()
 
 // Data
@@ -204,6 +218,27 @@ onBeforeMount(() => {
 const openDocumentSelected = (params: { documentRoute: string, openFolder?: boolean}) => {
   openDocument(params, (response: Response<boolean>) => {
     if (!response.success) error(response.message)
+  });
+}
+
+
+// Delete document register
+const deleteModal = ref(false)
+const selectedDocumentToDelete = ref<Documento | null>(null)
+
+const showDeleteModal = (document: Documento) => {
+  selectedDocumentToDelete.value = document
+  deleteModal.value = true
+}
+
+const confirmDeleteDocument = () => {
+  if (!selectedDocumentToDelete.value) return;
+
+  deleteDocument(selectedDocumentToDelete.value.id || '', (response: Response<string>) => {
+    if (!response.success) error(response.message)
+    info('Documento eliminado correctamente')
+    documentRegisters.value = documentRegisters.value.filter((register: Documento) => register.id !== selectedDocumentToDelete.value?.id)
+    deleteModal.value = false
   });
 }
 </script>

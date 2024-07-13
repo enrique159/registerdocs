@@ -91,3 +91,14 @@ ipcMain.on('open_document', async (event, params) => {
     event.reply('open_document', { success: false, message: 'Error al abrir documento', error: err })
   })
 })
+
+ipcMain.on('delete_document', async (event, id) => {
+  await documents.deleteDocument(id)
+    .then((response) => {
+      event.reply('delete_document', response)
+    })
+    .catch((err) => {
+      logger.error({ type: 'DELETE DOCUMENT', message: 'Error al eliminar documento', error: err })
+      event.reply('delete_document', { success: false, message: 'Error al eliminar documento', error: err })
+    })
+})

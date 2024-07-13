@@ -22,3 +22,14 @@ exports.getDocuments = async function () {
       return response(false, 'Error al buscar documentos', err)
     })
 }
+
+exports.deleteDocument = async function (id) {
+  return await knex('documents').where('id', id).del()
+    .then(() => {
+      return response(true, 'Documento eliminado', id)
+    })
+    .catch((err) => {
+      logger.error({ type: 'DELETE DOCUMENT', message: 'Error al eliminar documento', error: err })
+      return response(false, 'Error al eliminar documento', err)
+    })
+}
