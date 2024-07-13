@@ -72,7 +72,7 @@
         <v-spacer></v-spacer>
   
         <v-list dense nav>
-          <v-list-item link prepend-icon="mdi-cog" title="Configuracion" to="/main/configuration" />
+          <v-list-item link prepend-icon="mdi-cog" title="Configuracion" to="/main/settings" />
         </v-list>
       </div>
     </v-navigation-drawer>
@@ -126,7 +126,7 @@ const router = useRouter()
 const { clearUser } = useAppStore()
 
 const currentRoute = computed(() => {
-  return itemsMenu.value.find((item) => item.link === route.path)?.title
+  return itemsMenu.value.find((item) => item.link === route.path)?.title || 'Configuración'
 })
 
 const goToCreateRegister = () => {
