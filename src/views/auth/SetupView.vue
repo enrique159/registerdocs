@@ -213,12 +213,12 @@ const loadingConfig = ref<string>("start")
 const startConfigurationProcess = async () => {
   loadingConfig.value = "loading"
   const user = {
-    username: username.value,
-    password: password.value,
+    username: username.value.trim(),
+    password: password.value.trim(),
   }
   const configuration: Configuration = {
     inicializado: true,
-    ruta_recursos: ruta_recursos.value || "registerdocs",
+    ruta_recursos: ruta_recursos.value.trim() || "registerdocs",
   }
   await new Promise((resolve) => setTimeout(resolve, 2000))
   signUp(user, (response: Response<User>) => {

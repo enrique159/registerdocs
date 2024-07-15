@@ -67,7 +67,7 @@ const required = (value: string) => !!value || 'Este campo es requerido';
 
 const updateSelectedArea = () => {
   loadingUpdateArea.value = LoadingStates.LOADING;
-  updateArea({ id: props?.area?.id || '', nombre: editArea.value.nombre }, (response: Response<Area>) => {
+  updateArea({ id: props?.area?.id || '', nombre: editArea.value.nombre.trim() }, (response: Response<Area>) => {
     if (!response.success) {
       error(response.message);
       loadingUpdateArea.value = LoadingStates.ERROR;

@@ -286,11 +286,11 @@ const onSubmit = async () => {
       try {
         const document: Partial<Documento> = {
           fecha: fecha.value,
-          numero_oficio: numero_oficio.value ?? "",
-          enviado_por: enviado_por.value ?? "",
-          cargo: cargo.value ?? "",
-          asunto: asunto.value ?? "",
-          dirigido_a: dirigido_a.value ?? "",
+          numero_oficio: numero_oficio.value?.trim() ?? "",
+          enviado_por: enviado_por.value?.trim() ?? "",
+          cargo: cargo.value?.trim() ?? "",
+          asunto: asunto.value?.trim() ?? "",
+          dirigido_a: dirigido_a.value?.trim() ?? "",
           documento: { content: e.target?.result, name: file.name },
           area_id: area.value ?? "",
           user_id: getUser.id,
@@ -333,7 +333,7 @@ const createNewArea = async () => {
   loadingCreateArea.value = LoadingStates.LOADING
 
   await createArea(
-    { nombre: newArea.value },
+    { nombre: newArea.value.trim() ?? "" },
     async (response: Response<Area>) => {
       if (response.success) {
         success("Área creada correctamente")

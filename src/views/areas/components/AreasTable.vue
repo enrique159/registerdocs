@@ -127,7 +127,6 @@ const openCreateAreaDialog = (area: Area) => {
 }
 
 const updatedArea = (area: Area) => {
-  console.log("que llega",area)
   const index = areas.value.findIndex((a) => a.id === area.id)
   areas.value[index] = area
   createAreaDialog.value = false
