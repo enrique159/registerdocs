@@ -64,6 +64,11 @@ ipcMain.on('close_app', () => {
   app.quit()
 })
 
+ipcMain.on('restart_app', () => {
+  app.relaunch()
+  app.quit()
+})
+
 require('./app/modules/auth/authApplication.cjs')
 require('./app/modules/areas/areasApplication.cjs')
 require('./app/modules/actors/actorsApplication.cjs')

@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from "vue-router"
 import NotFoundView from "@/views/NotFoundView.vue"
 import HomeView from "@/views/home/HomeView.vue"
-import CreateRegisterView from "@/views/registers/CreateRegisterView.vue"
+import CreateDocumentView from "@/views/documents/CreateDocumentView.vue"
 import AreasView from "@/views/areas/AreasView.vue"
 import CalendarView from "@/views/calendar/CalendarView.vue"
 import ContactsView from "@/views/contacts/ContactsView.vue"
@@ -28,9 +28,9 @@ const routes: RouteRecordRaw[] = [
         component: HomeView,
       },
       {
-        path: "create-register",
-        name: "CreateRegister",
-        component: CreateRegisterView,
+        path: "create-document",
+        name: "CreateDocument",
+        component: CreateDocumentView,
       },
       {
         path: "areas",

@@ -1,9 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron')
-const { signIn } = require('./app/modules/auth/authListeners.cjs')
+const { signIn, signUp } = require('./app/modules/auth/authListeners.cjs')
 const { getAreas, createArea, updateArea, deleteArea } = require('./app/modules/areas/areasListeners.cjs')
 const { getActors, getActorByNombre, createActor, deleteActor } = require('./app/modules/actors/actorsListeners.cjs')
 const { createDocument, getDocuments, openDocument, deleteDocument } = require('./app/modules/documents/documentsListeners.cjs')
-const { getConfiguration, updateConfiguration } = require('./app/modules/configuration/configurationListeners.cjs')
+const { getConfiguration, updateConfiguration, createConfiguration } = require('./app/modules/configuration/configurationListeners.cjs')
 
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
@@ -20,8 +20,10 @@ contextBridge.exposeInMainWorld('electron', {
   // Configuration
   getConfiguration,
   updateConfiguration,
+  createConfiguration,
   // Auth
   signIn,
+  signUp,
   // Areas
   getAreas,
   createArea,
@@ -39,4 +41,5 @@ contextBridge.exposeInMainWorld('electron', {
   deleteDocument,
   // Extras
   closeApp: () => ipcRenderer.send('close_app'),
+  restartApp: () => ipcRenderer.send('restart_app'),
 })

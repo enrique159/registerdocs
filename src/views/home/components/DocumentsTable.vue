@@ -88,8 +88,8 @@
       :items-per-page-text="'Cantidad de registros por página'"
       :items-per-page-options="itemsPerPageOptions"
       :loading="loadingState === LoadingStates.LOADING"
-      density="comfortable"
       @click:row="(_: Event, row: any) => emits('open-document-dialog', row.item)"
+      density="comfortable"
       hover
     >
       <template #item.fecha="{ item }">
@@ -99,14 +99,14 @@
         <div class="d-flex flex-nowrap align-center">
           <v-tooltip text="Abrir documento" location="left">
             <template #activator="{ props }">
-              <v-btn v-bind="props" icon variant="plain" color="primary" size="small" @click="openDocumentSelected({ documentRoute: item.documento })">
+              <v-btn v-bind="props" icon variant="plain" color="primary" size="small" @click.stop="openDocumentSelected({ documentRoute: item.documento })">
                 <v-icon>mdi-file-document</v-icon>
               </v-btn>
             </template>
           </v-tooltip>
           <v-tooltip text="Abrir carpeta" location="left">
             <template #activator="{ props }">
-              <v-btn v-bind="props" icon variant="plain" color="warning" size="small" @click="openDocumentSelected({ documentRoute: item.documento, openFolder: true })">
+              <v-btn v-bind="props" icon variant="plain" color="warning" size="small" @click.stop="openDocumentSelected({ documentRoute: item.documento, openFolder: true })">
                 <v-icon>mdi-folder</v-icon>
               </v-btn>
             </template>
@@ -126,6 +126,13 @@
 
       <template #loading>
         <v-skeleton-loader type="table-row@5"></v-skeleton-loader>
+      </template>
+
+      <template #no-data>
+        <v-alert :value="true" class="bg-white-1" icon="warning">
+          <v-icon color="warning">mdi-alert-box-outline</v-icon>
+          No hay registros agregados aún
+        </v-alert>
       </template>
     </v-data-table>
 

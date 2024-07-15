@@ -10,7 +10,7 @@
         </template>
 
         <v-list style="background: white !important;" density="compact" nav>
-          <v-list-item link @click="goToCreateRegister">
+          <v-list-item link @click="goToCreateDocument">
             <div class="d-flex align-center">
               <v-icon class="tc-blue-0 ts-b3 mr-2">
                 mdi-file-document-plus
@@ -129,8 +129,8 @@ const currentRoute = computed(() => {
   return itemsMenu.value.find((item) => item.link === route.path)?.title || 'Configuración'
 })
 
-const goToCreateRegister = () => {
-  router.push('/main/create-register')
+const goToCreateDocument = () => {
+  router.push('/main/create-document')
 }
 
 const goToSignIn = () => {

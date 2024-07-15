@@ -3,7 +3,11 @@
     <div class="logo"><p>_registerdocs</p></div>
     <v-card class="signin-card px-6 py-8" min-width="368">
       <v-form v-model="form" @submit.prevent="onSubmit">
-        <h5 class="mb-8">Iniciar sesión</h5>
+        <h6 class="mb-3">Iniciar sesión</h6>
+        <p class="mb-8 tc-text-light ts-b4">
+          Bienvenido, por favor ingresa tus credenciales para
+          continuar.
+        </p>
         <v-text-field
           v-model="username"
           :readonly="loading"
@@ -15,7 +19,7 @@
         <v-text-field
           v-model="password"
           :readonly="loading"
-          :rules="[required]"
+          :rules="[required, minLength(6)]"
           :type="showPassword ? 'text' : 'password'"
           :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           label="Contraseña"
@@ -61,6 +65,8 @@ const loading = ref(false);
 const showPassword = ref(false);
 
 const required = (v: string) => !!v || "Este campo es requerido";
+const minLength = (length: number) => (v: string) =>
+  (v && v.length >= length) || `Debe tener al menos ${length} caracteres`;
 
 const onSubmit = async () => {
   if (!form.value) return;

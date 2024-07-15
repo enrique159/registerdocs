@@ -11,3 +11,9 @@ exports.updateConfiguration = function (data, callback) {
   ipcRenderer.on('update_configuration', (_, response) => callback(response))
   ipcRenderer.send('update_configuration', data)
 }
+
+exports.createConfiguration = function (data, callback) {
+  ipcRenderer.removeAllListeners('create_configuration')
+  ipcRenderer.on('create_configuration', (_, response) => callback(response))
+  ipcRenderer.send('create_configuration', data)
+}

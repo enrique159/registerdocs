@@ -1,6 +1,7 @@
 const { ipcMain, shell } = require('electron')
 const documents = require('./documentsRepository.cjs')
 const actors = require('../actors/actorsRepository.cjs')
+const configuration = require('../configuration/configurationRepository.cjs')
 const { v4: uuidv4 } = require('uuid')
 const fs = require('fs')
 const path = require('path')
@@ -21,12 +22,13 @@ ipcMain.on('get_documents', async (event) => {
 ipcMain.on('create_document', async (event, data) => {
   try {
     const id = uuidv4()
+    const { response: configData } = await configuration.getConfiguration()
     const documentType = data.documento.name.split('.').pop()
-    const directoryPath = path.join(os.homedir(), 'registerdocs-resources')
+    const directoryPath = configData.ruta_recursos
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath)
     }
-    const destinationPath = path.join(os.homedir(), 'registerdocs-resources', `${id}.${documentType}`)
+    const destinationPath = path.join(directoryPath, `${id}.${documentType}`)
     fs.writeFile(destinationPath, Buffer.from(data.documento.content), async (err) => {
       if (err) {
         logger.error({ type: 'CREATE DOCUMENT FILE', message: 'Error al crear documento', error: err })
@@ -66,8 +68,6 @@ ipcMain.on('open_document', async (event, params) => {
     event.reply('open_document', { success: false, message: 'El documento no existe', response: params })
     return
   }
-
-
   // Open the document in the file explorer
   try {
     if (params.openFolder) {
