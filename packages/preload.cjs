@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron')
-const { signIn, signUp } = require('./app/modules/auth/authListeners.cjs')
+const { signIn, signUp, changePassword } = require('./app/modules/auth/authListeners.cjs')
 const { getAreas, createArea, updateArea, deleteArea } = require('./app/modules/areas/areasListeners.cjs')
 const { getActors, getActorByNombre, createActor, deleteActor } = require('./app/modules/actors/actorsListeners.cjs')
 const { createDocument, getDocuments, openDocument, deleteDocument } = require('./app/modules/documents/documentsListeners.cjs')
@@ -24,6 +24,7 @@ contextBridge.exposeInMainWorld('electron', {
   // Auth
   signIn,
   signUp,
+  changePassword,
   // Areas
   getAreas,
   createArea,

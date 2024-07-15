@@ -336,7 +336,7 @@ const createNewArea = async () => {
     { nombre: newArea.value.trim() ?? "" },
     async (response: Response<Area>) => {
       if (response.success) {
-        success("Área creada correctamente")
+        success(response.message)
         await getAreas((allAreas: Response<Area[]>) => {
           areas.value = allAreas.response
         })
@@ -344,7 +344,7 @@ const createNewArea = async () => {
         area.value = response.response.id
         newArea.value = ""
       } else {
-        error("Ocurrió un error al crear el área")
+        error(response.message)
       }
       loadingCreateArea.value = LoadingStates.IDLE
     }

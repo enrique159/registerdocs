@@ -31,3 +31,24 @@ exports.signUp = async function (data) {
       return response(false, 'Error al crear usuario', err)
     })
 }
+
+exports.changePassword = async function (data) {
+  const user = await knex('users').select().where('id', data.id).first()
+  if (!user) {
+    logger.error({ type: 'CHANGE PASSWORD', message: 'Usuario no encontrado', data })
+    return response(false, 'Usuario no encontrado', data)
+  }
+  if (user.password !== data.oldPassword) {
+    logger.error({ type: 'CHANGE PASSWORD', message: 'Contraseña incorrecta', data })
+    return response(false, 'Contraseña incorrecta', data)
+  }
+  return await knex('users').update({ password: data.newPassword }).where('id', data.id).returning('*')
+    .then((user) => {
+      logger.info({ type: 'PASSWORD CHANGED', message: 'Contraseña cambiada', user: user[0] })
+      return response(true, 'Se ha cambiado la contraseña exitosamente', user[0])
+    })
+    .catch((err) => {
+      logger.error({ type: 'CHANGE PASSWORD', message: 'Error al cambiar contraseña', data, err })
+      return response(false, 'Hubo un error al cambiar contraseña', err)
+    })
+}

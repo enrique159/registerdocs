@@ -11,3 +11,9 @@ exports.signUp = function (params, callback) {
   ipcRenderer.on('sign_up', (_, response) => callback(response))
   ipcRenderer.send('sign_up', params)
 }
+
+exports.changePassword = function (params, callback) {
+  ipcRenderer.removeAllListeners('change_password')
+  ipcRenderer.on('change_password', (_, response) => callback(response))
+  ipcRenderer.send('change_password', params)
+}

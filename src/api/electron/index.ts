@@ -1,4 +1,4 @@
-import { Area, AuthParams, Configuration, Documento } from '@/api/interfaces'
+import { Area, AuthParams, Configuration, Documento, ChangePasswordParams } from '@/api/interfaces'
 
 /* Configuration */
 export const getConfiguration = async (callback: any) => window.electron.getConfiguration(callback)
@@ -8,6 +8,7 @@ export const createConfiguration = async (configuration: Configuration, callback
 /* Auth */
 export const signIn = async (auth: AuthParams, callback: any) => window.electron.signIn(auth, callback)
 export const signUp = async (auth: AuthParams, callback: any) => window.electron.signUp(auth, callback)
+export const changePassword = async (auth: ChangePasswordParams, callback: any) => window.electron.changePassword(auth, callback)
 
 /* Areas */
 export const getAreas = async (callback: any) => window.electron.getAreas(callback)
