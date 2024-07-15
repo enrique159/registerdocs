@@ -31,12 +31,12 @@ exports.createActor = async function (actor) {
     })
     .catch((err) => {
       logger.error({ type: 'CREATE ACTOR', message: 'Error al crear actor', error: err })
-      return response(false, 'Error al crear actor', err)
+      return response(false, 'Error al crear actor, ya se encuentra registrado', err)
     })
 }
 
-exports.deleteActor = async function (nombre) {
-  return await knex('actors').where('nombre', nombre).del()
+exports.deleteActor = async function (actor) {
+  return await knex('actors').where('nombre', actor.nombre).del()
     .then(() => {
       return response(true, 'Actor eliminado')
     })

@@ -4,7 +4,7 @@ import HomeView from "@/views/home/HomeView.vue"
 import CreateDocumentView from "@/views/documents/CreateDocumentView.vue"
 import AreasView from "@/views/areas/AreasView.vue"
 import CalendarView from "@/views/calendar/CalendarView.vue"
-import ContactsView from "@/views/contacts/ContactsView.vue"
+import ActorsView from "@/views/actors/ActorsView.vue"
 import SettingsView from "@/views/settings/SettingsView.vue"
 import SignInView from "@/views/auth/SignInView.vue"
 import SetupView from "@/views/auth/SetupView.vue"
@@ -43,9 +43,9 @@ const routes: RouteRecordRaw[] = [
         component: CalendarView,
       },
       {
-        path: "contacts",
-        name: "Contacts",
-        component: ContactsView,
+        path: "actors",
+        name: "Actors",
+        component: ActorsView,
       },
       {
         path: "settings",

@@ -108,8 +108,8 @@ const itemsMenu = ref([
   {
     icon: 'mdi-account-multiple',
     title: 'Contactos',
-    value: 'contacts',
-    link: '/main/contacts',
+    value: 'actors',
+    link: '/main/actors',
   },
   {
     icon: 'mdi-calendar',
