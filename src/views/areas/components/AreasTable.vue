@@ -60,7 +60,7 @@
           </v-tooltip>
           <v-tooltip text="Eliminar" location="left">
             <template #activator="{ props }">
-              <v-btn v-bind="props" icon variant="plain" color="red" size="small" @click.stop="">
+              <v-btn v-bind="props" icon variant="plain" color="red" size="small" @click.stop="showDeleteModal(item)">
                 <v-icon>mdi-trash-can-outline</v-icon>
               </v-btn>
             </template>
@@ -72,6 +72,19 @@
     <v-dialog v-model="createAreaDialog" max-width="500">
       <UpdateArea :area="selectedArea" @update-area="updatedArea" @cancel="createAreaDialog = false" />
     </v-dialog>
+
+    <v-dialog v-model="deleteAreaModal" max-width="400">
+      <v-card>
+        <v-card-title class="tc-text-dark tw-bold">Eliminar área</v-card-title>
+        <v-card-text class="tc-text-dark">
+          ¿Estás seguro de que deseas eliminar el área?
+        </v-card-text>
+        <v-card-actions>
+          <v-btn class="btn-base" color="primary" text @click="deleteAreaModal = false">Cancelar</v-btn>
+          <v-btn class="btn-base" color="red" text @click="confirmDeleteArea">Eliminar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -82,7 +95,7 @@ import {
   AREAS_TABLE_ITEMS_PER_PAGE_OPTIONS as itemsPerPageOptions
 } from '@/constants/areasTable.constants';
 import { onBeforeMount, ref } from 'vue'
-import { getAreas } from '@/api/electron';
+import { getAreas, deleteArea } from '@/api/electron';
 import { LoadingState, LoadingStates } from '@/types';
 import { Area, Response } from '@/api/interfaces';
 
@@ -130,6 +143,29 @@ const refreshAreas = async () => {
       loadingState.value = LoadingStates.ERROR
     }
   })
+}
+
+
+// Delete Area
+const deleteAreaModal = ref(false)
+const selectedAreaToDelete = ref<Area | null>(null)
+
+const showDeleteModal = (area: Area) => {
+  selectedAreaToDelete.value = area
+  deleteAreaModal.value = true
+}
+
+const confirmDeleteArea = () => {
+  if (!selectedAreaToDelete.value) return;
+
+  deleteArea(selectedAreaToDelete.value.id || '', (response: Response<null>) => {
+    if (!response.success) {
+      console.log("error",response.message)
+      return
+    }
+    areas.value = areas.value.filter((register: Area) => register.id !== selectedAreaToDelete.value?.id)
+    deleteAreaModal.value = false
+  });
 }
 </script>
 
