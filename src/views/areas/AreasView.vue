@@ -1,13 +1,18 @@
 <template>
-  <div>
-    <h1>Areas</h1>
+  <div class="areas-view">
+    <areas-table />
   </div>
 </template>
 
 <script setup lang="ts">
-
+import AreasTable from './components/AreasTable.vue'
 </script>
 
-<style scoped>
-
+<style lang="scss"scoped>
+.areas-view {
+  width: 100%;
+  height: calc(100vh - 54px);
+  padding: 0;
+  overflow-y: auto;
+}
 </style>

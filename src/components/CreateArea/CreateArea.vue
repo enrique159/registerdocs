@@ -24,12 +24,14 @@
         <v-spacer></v-spacer>
 
         <v-btn
+          class="btn-base"
           text="Cerrar"
           variant="plain"
           @click="showDialog = false"
         ></v-btn>
 
         <v-btn
+          class="btn-base"
           color="primary"
           text="Agegar"
           variant="tonal"

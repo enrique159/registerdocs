@@ -29,9 +29,14 @@ exports.createArea = async function (area) {
 }
 
 exports.updateArea = async function (area) {
-  return await knex('areas').where('id', area.id).update(area)
-    .then(() => {
-      return response(true, 'Área actualizada')
+  const areaExists = await knex('areas').where('nombre', area.nombre).select()
+  if (areaExists.length > 0 && areaExists[0].id !== area.id) {
+    logger.warning({ type: 'UPDATE AREA', message: 'El nombre del área ya existe', area: areaExists })
+    return response(false, 'El nombre del área ya existe', areaExists)
+  }
+  return await knex('areas').where('id', area.id).update(area).returning('*')
+    .then((area) => {
+      return response(true, 'Área actualizada', area[0])
     })
     .catch((err) => {
       logger.error({ type: 'UPDATE AREA', message: 'Error al actualizar área', error: err })
