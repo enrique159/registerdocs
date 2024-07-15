@@ -129,10 +129,12 @@
       </template>
 
       <template #no-data>
-        <v-alert :value="true" class="bg-white-1" icon="warning">
-          <v-icon color="warning">mdi-alert-box-outline</v-icon>
-          No hay registros agregados aún
-        </v-alert>
+        <div class="py-16 h-50 d-flex flex-column gap-2 justify-center align-center">
+          <img class="max-w-220-px" src="@/assets/empty_docs.svg" alt="">
+          <p class="ts-b2 text-center">
+            No se encontraron documentos registrados.
+          </p>
+        </div>
       </template>
     </v-data-table>
 

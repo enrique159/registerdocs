@@ -42,9 +42,9 @@
       <!-- ACTORS LIST -->
       <div class="actors-card-list mt-8">
         <v-card
-          v-for="actor in actors"
+          v-for="actor in filteredActors"
           :key="actor.nombre"
-          class="bg-white-0 br-3 bs-2"
+          class="bg-white-0 br-3 bs-1"
           elevation="0"
         >
           <v-card-title>
@@ -60,7 +60,7 @@
                   icon
                   variant="text"
                   density="compact"
-                  color="error"
+                  color="red"
                   @click="deleteSelectedActor({ ...actor })"
                 >
                   <v-icon size="small">mdi-trash-can-outline</v-icon>
@@ -77,14 +77,20 @@
 <script setup lang="ts">
 import { getActors, createActor, deleteActor } from '@/api/electron';
 import { Actor, Response } from '@/api/interfaces';
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref, computed } from 'vue';
 import { useToasts } from '@/composables/useToasts';
 
-const { error, success, warning } = useToasts();
+const { error, success, warning, info } = useToasts();
 
 const actors = ref<Actor[]>([]);
 const search = ref<string>('');
 const newContact = ref<string>('');
+
+const filteredActors = computed(() => {
+  return actors.value.filter((actor) =>
+    actor.nombre.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
 
 const createNewActor = () => {
   if (!newContact.value) {
@@ -110,7 +116,7 @@ const deleteSelectedActor = (actor: Actor) => {
       return;
     }
     actors.value = actors.value.filter((a) => a.nombre !== actor.nombre);
-    success('Actor eliminado correctamente');
+    info('Actor eliminado correctamente');
   });
 };
 
