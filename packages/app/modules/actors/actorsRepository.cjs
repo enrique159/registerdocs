@@ -1,5 +1,6 @@
 const knex = require('knex')(require('../../database/knexfile.cjs'))
 const { response, logger } = require('../../helpers/index.cjs')
+const { mapToActor } = require('./actorsMappers.cjs')
 
 exports.getActors = async function () {
   return await knex('actors').select()
@@ -25,9 +26,9 @@ exports.getActorByNombre = async function (nombre) {
 }
 
 exports.createActor = async function (actor) {
-  return await knex('actors').insert(actor)
-    .then(() => {
-      return response(true, 'Actor creado', actor)
+  return await knex('actors').insert(actor).returning('*')
+    .then((actors) => {
+      return response(true, 'Actor creado', actors)
     })
     .catch((err) => {
       logger.error({ type: 'CREATE ACTOR', message: 'Error al crear actor', error: err })
@@ -43,5 +44,21 @@ exports.deleteActor = async function (actor) {
     .catch((err) => {
       logger.error({ type: 'DELETE ACTOR', message: 'Error al eliminar actor', error: err })
       return response(false, 'Error al eliminar actor', err)
+    })
+}
+
+exports.importActors = async function (actors) {
+  if (!actors || actors.length === 0) {
+    return response(true, 'No hay actores para importar', [])
+  }
+  const mappedActors = actors.map(mapToActor)
+  await knex('actors').del()
+  return await knex('actors').insert(mappedActors).returning('*')
+    .then((data) => {
+      return response(true, 'Actores importados', data)
+    })
+    .catch((err) => {
+      logger.error({ type: 'IMPORT ACTORS', message: 'Error al importar actores', error: err })
+      return response(false, 'Error al importar actores', err)
     })
 }

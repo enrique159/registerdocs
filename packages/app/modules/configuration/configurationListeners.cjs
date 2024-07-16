@@ -17,3 +17,15 @@ exports.createConfiguration = function (data, callback) {
   ipcRenderer.on('create_configuration', (_, response) => callback(response))
   ipcRenderer.send('create_configuration', data)
 }
+
+exports.exportDatabase = function (callback) {
+  ipcRenderer.removeAllListeners('export_database')
+  ipcRenderer.on('export_database', (_, response) => callback(response))
+  ipcRenderer.send('export_database')
+}
+
+exports.importDatabase = function (data, callback) {
+  ipcRenderer.removeAllListeners('import_database')
+  ipcRenderer.on('import_database', (_, response) => callback(response))
+  ipcRenderer.send('import_database', data)
+}

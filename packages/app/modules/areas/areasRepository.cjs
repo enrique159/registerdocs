@@ -1,5 +1,6 @@
 const knex = require('knex')(require('../../database/knexfile.cjs'))
 const { response, logger } = require('../../helpers/index.cjs')
+const { mapToArea } = require('./areasMappers.cjs')
 
 exports.getAreas = async function () {
   return await knex('areas').select()
@@ -52,5 +53,22 @@ exports.deleteArea = async function (id) {
     .catch((err) => {
       logger.error({ type: 'DELETE AREA', message: 'Error al eliminar área', error: err })  
       return response(false, 'Error al eliminar área', err)
+    })
+}
+
+
+exports.importAreas = async function (areas) {
+  if (!areas || areas.length === 0) {
+    return response(true, 'No hay áreas para importar', [])
+  }
+  const mappedAreas = areas.map(mapToArea)
+  await knex('areas').del()
+  return await knex('areas').insert(mappedAreas).returning('*')
+    .then((newAreas) => {
+      return response(true, 'Áreas creadas', newAreas)
+    })
+    .catch((err) => {
+      logger.error({ type: 'CREATE AREAS', message: 'Error al crear áreas', error: err })
+      return response(false, 'Error al crear áreas', err)
     })
 }

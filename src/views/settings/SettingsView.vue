@@ -25,6 +25,41 @@
           <v-divider></v-divider>
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <p class="tc-text-dark tw-bold ts-b3 mb-2">
+            Configurar datos
+          </p>
+          <p class="ts-b4 tc-text-light mb-4">
+            Puedes importar y exportar la información de documentos, áreas y contactos.
+          </p>
+          <v-row class="mb-4">
+            <v-col cols="12" class="d-flex gap-2 justify-start align-center">
+              <v-btn
+                class="btn-base mt-1"
+                variant="tonal"
+                color="purple"
+                @click="openFile"
+              >
+                <v-icon size="small">mdi-file-import</v-icon>
+                Importar desde archivo
+              </v-btn>
+
+              <v-btn
+                class="btn-base mt-1"
+                variant="tonal"
+                color="gray"
+                @click="exportInfoModal = true"
+              >
+                <v-icon size="small">mdi-file-export</v-icon>
+                Exportar a archivo JSON
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+        </v-col>
+      </v-row>
     </v-container>
 
     <v-dialog v-model="changePasswordModal">
@@ -90,11 +125,32 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="exportInfoModal">
+      <v-card class="w-480-px mx-auto" prepend-icon="mdi-file-export" title="Exportar información">
+        <v-card-text>
+          <p class="tc-text-dark tw-medium ts-b3 mb-4">
+            ¿Estás seguro de exportar la información de documentos, áreas y contactos?
+          </p>
+          <p class="tc-text-light tw-medium ts-b4">
+            Esto generará un archivo JSON con toda la información guardada en la base de datos. Esto es ideal para hacer respaldos o actualización del programa.
+          </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn class="btn-base" variant="tonal" @click="exportInfoModal = false">
+            Cancelar
+          </v-btn>
+          <v-btn class="btn-base" variant="tonal" color="primary" @click="exportInfo">
+            Exportar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { changePassword } from '@/api/electron'
+import { changePassword, exportDatabase, importDatabase } from '@/api/electron'
 import { useAppStore } from '@/stores/appStore'
 import { useValidateInputs } from '@/composables/useValidateInputs'
 import { ref } from 'vue'
@@ -147,6 +203,54 @@ const closeDialog = () => {
   showNewPassword.value = false;
   changePasswordModal.value = false;
 };
+
+
+// Export info
+const exportInfoModal = ref<boolean>(false)
+
+const exportInfo = () => {
+  exportDatabase((response: Response<any>) => {
+    if (!response.success) {
+      error(response.message)
+      return
+    }
+    generateJSONLocalFile(response.response, 'database.json')
+    exportInfoModal.value = false
+  })
+}
+
+const generateJSONLocalFile = (data: any, filename: string) => {
+  const file = new Blob([JSON.stringify(data)], { type: 'application/json' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(file)
+  a.download = filename
+  a.click()
+  a.remove()
+}
+
+// Import info
+const openFile = () => {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = '.json'
+  input.onchange = (e: any) => {
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.onload = (e: any) => {
+      const data = JSON.parse(e.target.result)
+      importDatabase(data, (response: Response<any>) => {
+        if (!response.success) {
+          error(response.message)
+          return
+        }
+        success(response.message)
+      })
+    }
+    reader.readAsText(file)
+  }
+  input.click()
+  input.remove()
+}
 </script>
 
 <style lang="scss" scoped>

@@ -76,11 +76,11 @@
 
             <v-col cols="10">
               <div class="d-flex flex-wrap gap-2">
-                <v-btn class="btn-base" color="primary" variant="tonal">
+                <v-btn class="btn-base" color="primary" variant="tonal" @click="openDocument({ documentRoute: props.document?.documento }, () => {})">
                   <v-icon>mdi-open-in-new</v-icon>
                   Abrir documento
                 </v-btn>
-                <v-btn class="btn-base" color="warning" variant="tonal">
+                <v-btn class="btn-base" color="warning" variant="tonal" @click="openDocument({ documentRoute: props.document?.documento, openFolder: true }, () => {})">
                   <v-icon>mdi-folder</v-icon>
                   Abrir ubicación
                 </v-btn>
@@ -104,6 +104,7 @@
 <script setup lang="ts">
 import { Documento } from '@/api/interfaces';
 import { useFormat } from '@/composables/useFormat';
+import { openDocument } from '@/api/electron';
 
 const { formatDatefull } = useFormat()
 

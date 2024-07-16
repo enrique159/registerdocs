@@ -4,7 +4,7 @@
  */
 exports.createTable = async function(knex) {
     await knex.schema.createTable('activities', (table) => {
-      table.uuid('id').primary()
+      table.uuid('id').defaultTo(knex.fn.uuid()).primary()
       table.string('accion')
       table.string('descripcion')
       table.uuid('user_id').references('users.id')

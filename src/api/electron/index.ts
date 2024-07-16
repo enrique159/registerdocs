@@ -4,6 +4,8 @@ import { Area, AuthParams, Configuration, Documento, ChangePasswordParams, Actor
 export const getConfiguration = async (callback: any) => window.electron.getConfiguration(callback)
 export const updateConfiguration = async (configuration: Configuration, callback: any) => window.electron.updateConfiguration(configuration, callback)
 export const createConfiguration = async (configuration: Configuration, callback: any) => window.electron.createConfiguration(configuration, callback)
+export const exportDatabase = async (callback: any) => window.electron.exportDatabase(callback)
+export const importDatabase = async (data: any, callback: any) => window.electron.importDatabase(data, callback)
 
 /* Auth */
 export const signIn = async (auth: AuthParams, callback: any) => window.electron.signIn(auth, callback)
