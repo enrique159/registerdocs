@@ -23,7 +23,7 @@ exports.signUp = async function (data) {
   }
   return await knex('users').insert(data).returning('*')
     .then((user) => {
-      logger.info({ type: 'USER CREATED', message: 'Usuario creado', user: user[0] })
+      logger.info({ type: 'USER CREATED', message: 'Usuario creado', user: data.username })
       return response(true, 'Usuario creado', user[0])
     })
     .catch((err) => {
