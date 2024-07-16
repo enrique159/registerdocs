@@ -1,9 +1,9 @@
 const { ipcRenderer } = require('electron')
 
-exports.getActivities = function (callback) {
+exports.getActivities = function (id, callback) {
   ipcRenderer.removeAllListeners('get_activities')
   ipcRenderer.on('get_activities', (_, response) => callback(response))
-  ipcRenderer.send('get_activities')
+  ipcRenderer.send('get_activities', id)
 }
 
 exports.createActivity = function (data, callback) {

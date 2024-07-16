@@ -1,8 +1,8 @@
 const { ipcMain } = require('electron')
 const { getActivities, createActivity, deleteActivity } = require('./activitiesRepository.cjs')
 
-ipcMain.on('get_activities', async (event) => {
-  const response = await getActivities()
+ipcMain.on('get_activities', async (event, id) => {
+  const response = await getActivities(id)
   event.reply('get_activities', response)
 })
 

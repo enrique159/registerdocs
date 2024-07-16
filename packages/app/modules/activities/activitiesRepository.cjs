@@ -2,8 +2,8 @@ const knex = require('knex')(require('../../database/knexfile.cjs'))
 const { response, logger } = require('../../helpers/index.cjs')
 const { mapToActivity } = require('./activitiesMappers.cjs')
 
-exports.getActivities = async function () {
-  return await knex('activities').select()
+exports.getActivities = async function (documentId) {
+  return await knex('activities').select().where('document_id', documentId)
     .then((activities) => {
       return response(true, 'Actividades encontradas', activities)
     })

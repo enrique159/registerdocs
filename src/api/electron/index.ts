@@ -1,4 +1,4 @@
-import { Area, AuthParams, Configuration, Documento, ChangePasswordParams, Actor } from '@/api/interfaces'
+import { Area, AuthParams, Configuration, Documento, ChangePasswordParams, Actor, Activity } from '@/api/interfaces'
 
 /* Configuration */
 export const getConfiguration = async (callback: any) => window.electron.getConfiguration(callback)
@@ -29,3 +29,7 @@ export const getDocuments = async (callback: any) => window.electron.getDocument
 export const createDocument = async (document: Partial<Documento>, callback: any) => window.electron.createDocument(document, callback)
 export const openDocument = async (params: { documentRoute: string, openFolder?: boolean }, callback: any) => window.electron.openDocument(params, callback)
 export const deleteDocument = async (id: string, callback: any) => window.electron.deleteDocument(id, callback)
+
+/* Activities */
+export const getActivities = async (id: string, callback: any) => window.electron.getActivities(id, callback)
+export const createActivity = async (activity: Activity, callback: any) => window.electron.createActivity(activity, callback)

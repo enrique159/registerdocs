@@ -14,6 +14,11 @@ export const useFormat = () => {
     return moment(date).format('D MMMM YYYY')
   }
 
+  const formatDatetime = (date: Date | undefined) => {
+    console.log("date", date)
+    return moment(date ?? new Date()).tz('America/Mazatlan').format('DD MMMM YYYY hh:mm A')
+  }
+
 
   const formatFileSize = (size: number) => {
     if (size === 0) return '0 Bytes'
@@ -30,5 +35,6 @@ export const useFormat = () => {
     formatDate,
     formatDatefull,
     formatFileSize,
+    formatDatetime
   }
 }

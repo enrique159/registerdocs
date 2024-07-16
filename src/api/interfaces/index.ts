@@ -1,6 +1,6 @@
 import { AuthParams, ChangePasswordParams } from './auth'
 import { Area } from './areas'
-import { Documento } from './documents'
+import { Documento, Activity } from './documents'
 import { Configuration } from './configuration'
 import { Actor } from './actors'
 import { User } from './users'
@@ -11,4 +11,14 @@ interface Response<T> {
   response: T
 }
 
-export type { AuthParams, Area, Documento, Configuration, Actor, User, ChangePasswordParams, Response }
+export type {
+  User,
+  Area, 
+  Actor, 
+  Response,
+  Activity,
+  Documento,
+  AuthParams,
+  Configuration, 
+  ChangePasswordParams, 
+}
