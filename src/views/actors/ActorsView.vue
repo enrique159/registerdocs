@@ -1,6 +1,6 @@
 <template>
   <div class="contacts-view">
-    <v-container>
+    <v-container fluid>
       <v-row>
         <!-- SEARCH BAR -->
         <v-col cols="5" md="4">
@@ -88,7 +88,7 @@ const newContact = ref<string>('');
 
 const filteredActors = computed(() => {
   return actors.value.filter((actor) =>
-    actor.nombre.toLowerCase().includes(search.value.toLowerCase())
+    actor.nombre.toLowerCase().includes(search.value?.toLowerCase() ?? '')
   );
 });
 
@@ -103,7 +103,7 @@ const createNewActor = () => {
       error(response.message);
       return;
     }
-    actors.value.push(response.response);
+    actors.value.push({ nombre: newContact.value});
     newContact.value = '';
     success('Actor creado correctamente');
   });
