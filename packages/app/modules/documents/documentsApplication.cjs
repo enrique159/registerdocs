@@ -86,7 +86,6 @@ ipcMain.on('open_document', async (event, params) => {
     event.reply('open_document', { success: true, message: 'Documento abierto', response: params })
   })
   .catch((err) => {
-    console.log(err)
     logger.error({ type: 'OPEN DOCUMENT', message: 'Error al abrir documento', error: err })
     event.reply('open_document', { success: false, message: 'Error al abrir documento', error: err })
   })

@@ -47,7 +47,6 @@ exports.importDocuments = async function (documents) {
       return response(true, 'Documentos importados', data)
     })
     .catch((err) => {
-      console.log(err)
       logger.error({ type: 'IMPORT DOCUMENTS', message: 'Error al importar documentos', error: err })
       return response(false, 'Error al importar documentos', err)
     })

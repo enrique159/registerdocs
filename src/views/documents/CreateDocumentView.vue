@@ -275,7 +275,6 @@ const onSubmit = async () => {
   await createDocumentFormRef.value?.validate()
   if (createDocumentFormRef.value?.isValid) {
     if (!selectedDocument.value) {
-      console.log(selectedDocument.value)
       return warning("Selecciona un documento")
     }
 

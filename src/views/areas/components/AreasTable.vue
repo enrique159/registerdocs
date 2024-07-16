@@ -98,9 +98,11 @@ import { onBeforeMount, ref } from 'vue'
 import { getAreas, deleteArea } from '@/api/electron';
 import { LoadingState, LoadingStates } from '@/types';
 import { Area, Response } from '@/api/interfaces';
+import { useToasts } from '@/composables/useToasts';
 
 const search = ref('')
 const loadingState = ref<LoadingState>(LoadingStates.IDLE)
+const { error } = useToasts()
 
 const areas = ref<Area[]>([])
 
@@ -111,6 +113,7 @@ onBeforeMount(async () => {
       areas.value = response.response
       loadingState.value = LoadingStates.SUCCESS
     } else {
+      error(response.message)
       loadingState.value = LoadingStates.ERROR
     }
   })
@@ -139,6 +142,7 @@ const refreshAreas = async () => {
       areas.value = response.response
       loadingState.value = LoadingStates.SUCCESS
     } else {
+      error(response.message)
       loadingState.value = LoadingStates.ERROR
     }
   })
@@ -159,7 +163,7 @@ const confirmDeleteArea = () => {
 
   deleteArea(selectedAreaToDelete.value.id || '', (response: Response<null>) => {
     if (!response.success) {
-      console.log("error",response.message)
+      error(response.message)
       return
     }
     areas.value = areas.value.filter((register: Area) => register.id !== selectedAreaToDelete.value?.id)
