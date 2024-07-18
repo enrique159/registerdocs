@@ -1,6 +1,6 @@
 <template>
   <div class="signin-view">
-    <div class="logo"><p>_registerdocs</p></div>
+    <logo />
     <v-card class="signin-card px-6 py-8" min-width="368">
       <v-form v-model="form" @submit.prevent="onSubmit">
         <h6 class="mb-3">Iniciar sesión</h6>
@@ -43,21 +43,27 @@
         </v-btn>
       </v-form>
     </v-card>
+
+    <p class="version-text">
+      {{ version }}
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
+import Logo from "@/components/Logo/Logo.vue";
 import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { useToasts } from "@/composables/useToasts";
 import { useAppStore } from "@/stores/appStore";
-import { signIn, getConfiguration } from "@/api/electron";
+import { signIn, getConfiguration, getVersion } from "@/api/electron";
 import { Configuration, Response } from "@/api/interfaces";
 
 const router = useRouter();
 const { error } = useToasts();
 const { setUser, setConfig } = useAppStore();
 
+const version = ref("");
 const form = ref(false);
 const username = ref("");
 const password = ref("");
@@ -71,7 +77,6 @@ const minLength = (length: number) => (v: string) =>
 const onSubmit = async () => {
   if (!form.value) return;
   loading.value = true;
-  await new Promise((resolve) => setTimeout(resolve, 300));
   signIn(
     { username: username.value, password: password.value },
     (response: any) => {
@@ -89,8 +94,11 @@ const onSubmit = async () => {
 /*
   Configuration
 */
-onBeforeMount(async () => {
-  await getConfiguration((response: Response<Configuration>) => {
+onBeforeMount(() => {
+  getVersion((response: string) => {
+    version.value = response;
+  });
+  getConfiguration((response: Response<Configuration>) => {
     if (!response.success) return error(response.message);
     setConfig(response.response);
     if (!response.response.inicializado) {
@@ -117,5 +125,13 @@ onBeforeMount(async () => {
     position: absolute;
     top: 2rem;
   }
+}
+
+.version-text {
+  position: absolute;
+  bottom: 1rem;
+  text-align: center;
+  color: $color-white-3;
+  font-weight: $font-medium;
 }
 </style>

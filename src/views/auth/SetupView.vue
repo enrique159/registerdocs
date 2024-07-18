@@ -143,6 +143,10 @@
         </p>
       </v-card-text>
     </v-card>
+
+    <p class="version-text">
+      {{ version }}
+    </p>
   </div>
 </template>
 
@@ -150,12 +154,14 @@
 import { ref, reactive, computed } from "vue"
 import { useValidateInputs } from "@/composables/useValidateInputs"
 import { useToasts } from "@/composables/useToasts";
-import { createConfiguration, signUp } from "@/api/electron";
+import { createConfiguration, signUp, getVersion } from "@/api/electron";
 import { Configuration, Response, User } from "@/api/interfaces";
+import { onBeforeMount } from "vue";
 
 const { validateLetters, validatePassword } = useValidateInputs()
 const { error } = useToasts()
 
+const version = ref<string>("")
 const username = ref<string>("")
 const password = ref<string>("")
 const ruta_recursos = ref<string>("")
@@ -238,6 +244,12 @@ const startConfigurationProcess = async () => {
   loadingConfig.value = "done"
   restartingCounting()
 }
+
+onBeforeMount(() => {
+  getVersion((response: string) => {
+    version.value = response;
+  });
+})
 </script>
 
 <style lang="scss" scoped>
@@ -256,6 +268,15 @@ const startConfigurationProcess = async () => {
   .logo {
     position: absolute;
     top: 2rem;
+  }
+
+
+  .version-text {
+    position: absolute;
+    bottom: 1rem;
+    text-align: center;
+    color: $color-white-3;
+    font-weight: $font-medium;
   }
 }
 </style>

@@ -35,6 +35,17 @@ exports.deleteActivity = async function (id) {
     })
 }
 
+exports.getAllActivities = async function () {
+  return await knex('activities').select()
+    .then((activities) => {
+      return response(true, 'Actividades encontradas', activities)
+    })
+    .catch((err) => {
+      logger.error({ type: 'GET ALL ACTIVITIES ERROR', message: err })
+      return response(false, 'Error al traer las actividades', err)
+    })
+}
+
 exports.importActivities = async function (activities) {
   if (!activities || activities.length === 0) {
     return response(true, 'No hay actividades para importar', [])

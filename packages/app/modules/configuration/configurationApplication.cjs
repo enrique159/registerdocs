@@ -29,7 +29,7 @@ ipcMain.on('export_database', async (event) => {
     documents: await documents.getDocuments(),
     areas: await areas.getAreas(),
     actors: await actors.getActors(),
-    activities: await activities.getActivities()
+    activities: await activities.getAllActivities()
   }
   if (!response.documents.success || !response.areas.success || !response.actors.success || !response.activities.success) {
     logger.error({ type: 'EXPORT DATABASE', message: 'Error al exportar la base de datos', error: response })

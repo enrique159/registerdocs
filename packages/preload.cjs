@@ -4,7 +4,7 @@ const { getAreas, createArea, updateArea, deleteArea } = require('./app/modules/
 const { getActivities, createActivity, deleteActivity } = require('./app/modules/activities/activitiesListeners.cjs')
 const { getActors, getActorByNombre, createActor, deleteActor } = require('./app/modules/actors/actorsListeners.cjs')
 const { createDocument, getDocuments, openDocument, deleteDocument } = require('./app/modules/documents/documentsListeners.cjs')
-const { getConfiguration, updateConfiguration, createConfiguration, exportDatabase, importDatabase } = require('./app/modules/configuration/configurationListeners.cjs')
+const { getConfiguration, updateConfiguration, createConfiguration, exportDatabase, importDatabase, getVersion } = require('./app/modules/configuration/configurationListeners.cjs')
 
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
@@ -24,6 +24,7 @@ contextBridge.exposeInMainWorld('electron', {
   createConfiguration,
   exportDatabase,
   importDatabase,
+  getVersion,
   // Auth
   signIn,
   signUp,

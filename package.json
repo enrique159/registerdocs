@@ -1,7 +1,7 @@
 {
   "name": "registerdocs",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "Enrique Marin Hirales",
   "license": "MIT",
   "main": "packages/main.cjs",

@@ -34,6 +34,14 @@
         </template>
 
         <v-list style="background: white !important;" density="compact" nav>
+          <v-list-item link @click="aboutUsDialog = true">
+            <div class="d-flex align-center">
+              <v-icon class="tc-text-light ts-b3 mr-2">
+                mdi-information-outline
+              </v-icon>
+              <span>Acerca de</span>
+            </div>
+          </v-list-item>
           <v-list-item link @click="goToSignIn">
             <div class="d-flex align-center">
               <v-icon class="tc-text-light ts-b3 mr-2">
@@ -82,11 +90,14 @@
     </v-main>
 
     <create-area :create-area-dialog="createAreaDialog" @update:createAreaDialog="createAreaDialog = $event" />
+
+    <about-us :show-dialog="aboutUsDialog" @update:dialog="aboutUsDialog = $event" />
   </div>
 </template>
 
 <script setup lang="ts">
 import CreateArea from '@/components/CreateArea/CreateArea.vue'
+import AboutUs from '@/components/AboutUs/AboutUs.vue'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
@@ -120,6 +131,7 @@ const itemsMenu = ref([
 ])
 
 const createAreaDialog = ref(false)
+const aboutUsDialog = ref(false)
 const drawer = ref(false)
 const route = useRoute()
 const router = useRouter()

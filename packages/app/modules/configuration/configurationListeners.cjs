@@ -29,3 +29,9 @@ exports.importDatabase = function (data, callback) {
   ipcRenderer.on('import_database', (_, response) => callback(response))
   ipcRenderer.send('import_database', data)
 }
+
+exports.getVersion = function (callback) {
+  ipcRenderer.removeAllListeners('get_version')
+  ipcRenderer.on('get_version', (_, response) => callback(response))
+  ipcRenderer.send('get_version')
+}

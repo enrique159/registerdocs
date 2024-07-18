@@ -69,6 +69,10 @@ ipcMain.on('restart_app', () => {
   app.quit()
 })
 
+ipcMain.on('get_version', (event) => {
+  event.reply('get_version', app.getVersion())
+})
+
 require('./app/modules/auth/authApplication.cjs')
 require('./app/modules/areas/areasApplication.cjs')
 require('./app/modules/actors/actorsApplication.cjs')
