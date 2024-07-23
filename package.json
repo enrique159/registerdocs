@@ -17,7 +17,8 @@
     "electron:dev": "concurrently -k \"cross-env BROWSER=none npm run vite:dev\" \"npm run electron\"",
     "electron:builder": "electron-builder",
     "build:for:electron": "vue-tsc --noEmit && cross-env ELECTRON=true vite build",
-    "app:build": "npm run build:for:electron && npm run electron:builder",
+    "app:build": "npm run prepare:dir && npm run build:for:electron && npm run electron:builder",
+    "prepare:dir": "node ./scripts/prepare-dir.js",
     "migrate:latest": "knex migrate:latest",
     "migrate:make": "knex migrate:make"
   },
@@ -70,7 +71,15 @@
       "packages/**/*"
     ],
     "win": {
-      "icon": "./public/icon.png"
+      "icon": "./public/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32"
+          ]
+        }
+      ]
     }
   }
 }
